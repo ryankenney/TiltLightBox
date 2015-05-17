@@ -7,7 +7,7 @@ TODO: Docs...
 Pin Assignment
 ----------
 
-This is presuming an Arduino Pro Mini and the RF24 library used for the NRF24L01 wireless adaptor. (Source for NRF24L01 pin assignments: (https://arduino-info.wikispaces.com/Nrf24L01-2.4GHz-HowTo)[https://arduino-info.wikispaces.com/Nrf24L01-2.4GHz-HowTo])
+This is presuming an Arduino Pro Mini and the RF24 library used for the NRF24L01 wireless adaptor. (Source for NRF24L01 pin assignments: [https://arduino-info.wikispaces.com/Nrf24L01-2.4GHz-HowTo](https://arduino-info.wikispaces.com/Nrf24L01-2.4GHz-HowTo))
 
 * A1: North switch
 * A2: South switch
