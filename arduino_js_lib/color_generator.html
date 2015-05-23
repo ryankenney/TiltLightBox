@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<script type="text/javascript">
+var Module = {
+	// This is automatically called by Emscripten when the compiled c code is ready.
+	// Treat it like body.onload().
+	onRuntimeInitialized: function() {
+		console.log("onRuntimeInitialized called");
+		var box1 = Module.ccall('mallocTiltBox', 'number');
+		console.log("Box: "+box1);
+		
+		// TODO [rkenney]: Remove debug
+		console.log("Box R: "+Module.ccall('getBoxStartColorRed', 'number', ['number'], [box1]));
+		console.log("Box G: "+Module.ccall('getBoxStartColorGreen', 'number', ['number'], [box1]));
+		console.log("Box B: "+Module.ccall('getBoxStartColorBlue', 'number', ['number'], [box1]));
+	}
+};
+</script>
+
+<!-- Our C library (compiled by Emscripten) -->
+<script src="color_generator.js"></script>
+
+</head>
+
+<body>
+<!--
+<canvas id="main" width="800" height="600"></canvas>
+-->
+</body>
+
+</html>
