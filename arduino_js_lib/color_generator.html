@@ -4,18 +4,48 @@
 <head>
 
 <script type="text/javascript">
+
+// TODO [rkenney]: Merge this with the c code
+var DELAY_MILLIS = 1000;
+
+var boxes = [];
+
+var color;
+
+var refreshBoxes = function() {
+	console.log("B.SIZE: "+boxes.length);
+	for (var i in boxes) {
+		var box = boxes[i];
+
+		Module.ccall('getNextColor', null, ['number', 'number'], [box, color]);
+
+		// TODO [rkenney]: Remove debug
+		console.log("BOX: "+box);
+		console.log("Box R: "+Module.ccall('getColorRed', 'number', ['number'], [color]));
+		console.log("Box G: "+Module.ccall('getColorGreen', 'number', ['number'], [color]));
+		console.log("Box B: "+Module.ccall('getColorBlue', 'number', ['number'], [color]));
+	}
+};
+
 var Module = {
 	// This is automatically called by Emscripten when the compiled c code is ready.
 	// Treat it like body.onload().
 	onRuntimeInitialized: function() {
 		console.log("onRuntimeInitialized called");
-		var box1 = Module.ccall('mallocTiltBox', 'number');
-		console.log("Box: "+box1);
-		
+		boxes.push(Module.ccall('mallocTiltBox', 'number'));
+		var nextColorFunc = Module.ccall('getSingleDirectionColorFunc', 'number');
+		Module.ccall('setNextColorFunc', null, ['number'], [nextColorFunc]);
+
 		// TODO [rkenney]: Remove debug
-		console.log("Box R: "+Module.ccall('getBoxStartColorRed', 'number', ['number'], [box1]));
-		console.log("Box G: "+Module.ccall('getBoxStartColorGreen', 'number', ['number'], [box1]));
-		console.log("Box B: "+Module.ccall('getBoxStartColorBlue', 'number', ['number'], [box1]));
+		console.log("B.SIZE: "+boxes.length);
+		console.log("BOX: "+boxes[0]);
+		console.log("Box R: "+Module.ccall('getBoxStartColorRed', 'number', ['number'], [boxes[0]]));
+		console.log("Box G: "+Module.ccall('getBoxStartColorGreen', 'number', ['number'], [boxes[0]]));
+		console.log("Box B: "+Module.ccall('getBoxStartColorBlue', 'number', ['number'], [boxes[0]]));
+
+		color = Module.ccall('mallocColor', 'number');
+
+		window.setInterval(refreshBoxes, DELAY_MILLIS);
 	}
 };
 </script>
