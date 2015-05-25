@@ -12,6 +12,7 @@ typedef struct TILT_BOX {
 	unsigned char startColor[3];
 	unsigned char endColor[3];
 	long transitionDuration;
+	// TODO [rkenney]: Make this clock-based instead of cycle based (more consistent)
 	long totalTransitionCycles;
 	long currentCycle;
 	void (*nextColorFunction)(struct TILT_BOX *, unsigned char *);

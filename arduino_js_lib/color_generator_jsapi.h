@@ -3,6 +3,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <emscripten.h>
 #include "color_generator.h"
 
 #ifdef __cplusplus
@@ -11,19 +12,15 @@ extern "C" {
 
 NextColorFunction getSingleDirectionColorFunc();
 
-unsigned char * mallocColor();
 TiltBox * mallocTiltBox();
-int getBoxStartColorRed(TiltBox *box);
-int getBoxStartColorBlue(TiltBox *box);
-int getBoxStartColorGreen(TiltBox *box);
-
-void setNextColorFunc(TiltBox *box, NextColorFunction func);
 
 void getNextColor(TiltBox *box, unsigned char *result);
 
 int getColorRed(unsigned char *rgb);
 int getColorGreen(unsigned char *rgb);
 int getColorBlue(unsigned char *rgb);
+
+void runCycle(TiltBox *box);
 
 #ifdef __cplusplus
 }
