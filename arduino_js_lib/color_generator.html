@@ -2,50 +2,95 @@
 <html>
 
 <head>
-
+<style>
+#main_canvas {
+	background-color: black;
+}
+</style>
 <script type="text/javascript">
 
-// TODO [rkenney]: Merge this with the c code
-var DELAY_MILLIS = 1000;
+var DELAY_MILLIS = 10;
 
 var boxes = [];
+var boxesIndex = [];
 
-var color;
+/**
+ * Draws a colored box on the canvas, with the specified color,
+ * and at the specified location
+ */
+function drawBox(r, g, b, x, y) {
+	var canvas = document.getElementById("main_canvas");
+	var context = canvas.getContext("2d");
+	context.fillStyle = "rgb("+r+","+g+","+b+")";
+	context.strokeStyle = "grey";
+	context.lineWidth = 3;
+	context.beginPath();
+	context.moveTo(x, y);
+	context.lineTo(x+70, y);
+	context.lineTo(x+65, y+100);
+	context.lineTo(x+5, y+100);
+	context.closePath();
+	context.fill();
+	context.stroke();
+}
 
-var refreshBoxes = function() {
-	console.log("B.SIZE: "+boxes.length);
-	for (var i in boxes) {
-		var box = boxes[i];
+/**
+ * An object representing a Tilt Light Box
+ */
+var TiltBox = function(nativeBox, x, y) {
+	this.nativeBox = nativeBox;
+	this.x = x;
+	this.y = y;
+};
 
-		Module.ccall('getNextColor', null, ['number', 'number'], [box, color]);
+/**
+ * Creates an instance of the Tilt Light Box at the specified location
+ * and then adds the object to the provided collections
+ */
+var createTiltBox = function(x, y, list, index) {
+	var nativeBox = Module.ccall('mallocTiltBox', 'number');
+	var box = new TiltBox(nativeBox, x, y);
+	list.push(box);
+	index[nativeBox] = box;
+}
 
-		// TODO [rkenney]: Remove debug
-		console.log("BOX: "+box);
-		console.log("Box R: "+Module.ccall('getColorRed', 'number', ['number'], [color]));
-		console.log("Box G: "+Module.ccall('getColorGreen', 'number', ['number'], [color]));
-		console.log("Box B: "+Module.ccall('getColorBlue', 'number', ['number'], [color]));
-	}
+/**
+ * Launches a native cycle of the tilt light box code
+ */
+var cycleBox = function(box) {
+	Module.ccall('runCycle', null, ['number'], [box.nativeBox]);
 };
 
 var Module = {
+
 	// This is automatically called by Emscripten when the compiled c code is ready.
 	// Treat it like body.onload().
 	onRuntimeInitialized: function() {
-		console.log("onRuntimeInitialized called");
-		boxes.push(Module.ccall('mallocTiltBox', 'number'));
-		var nextColorFunc = Module.ccall('getSingleDirectionColorFunc', 'number');
-		Module.ccall('setNextColorFunc', null, ['number'], [nextColorFunc]);
 
-		// TODO [rkenney]: Remove debug
-		console.log("B.SIZE: "+boxes.length);
-		console.log("BOX: "+boxes[0]);
-		console.log("Box R: "+Module.ccall('getBoxStartColorRed', 'number', ['number'], [boxes[0]]));
-		console.log("Box G: "+Module.ccall('getBoxStartColorGreen', 'number', ['number'], [boxes[0]]));
-		console.log("Box B: "+Module.ccall('getBoxStartColorBlue', 'number', ['number'], [boxes[0]]));
+		// Register a "writeColor()" callback method with the native code
+		var writeColorFunc = Runtime.addFunction(function(nativeBox,r,g,b) {
+			var box = boxesIndex[nativeBox];
+			drawBox(r, g, b, box.x, box.y);
+		});
+		Module.callMain([writeColorFunc.toString()]);
 
-		color = Module.ccall('mallocColor', 'number');
+		// Create tilt light boxes, each with an internal native component
+		var x = [10, 100, 190, 280, 370];
+		var y = [10, 120, 230];
+		createTiltBox(x[0], y[1], boxes, boxesIndex);
+		createTiltBox(x[0], y[2], boxes, boxesIndex);
+		createTiltBox(x[1], y[2], boxes, boxesIndex);
+		createTiltBox(x[2], y[0], boxes, boxesIndex);
+		createTiltBox(x[2], y[1], boxes, boxesIndex);
+		createTiltBox(x[2], y[2], boxes, boxesIndex);
+		createTiltBox(x[3], y[2], boxes, boxesIndex);
+		createTiltBox(x[4], y[1], boxes, boxesIndex);
+		createTiltBox(x[4], y[2], boxes, boxesIndex);
 
-		window.setInterval(refreshBoxes, DELAY_MILLIS);
+		// Schedule cycle execution of each box. This simulates the CPU cycle of box.
+		for (i in boxes) {
+			window.setInterval(cycleBox, DELAY_MILLIS, boxes[i]);
+		}
 	}
 };
 </script>
@@ -56,9 +101,7 @@ var Module = {
 </head>
 
 <body>
-<!--
-<canvas id="main" width="800" height="600"></canvas>
--->
+	<canvas id="main_canvas" width="500" height="400"></canvas>
 </body>
 
 </html>
