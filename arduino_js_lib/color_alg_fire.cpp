@@ -4,8 +4,8 @@
  * The hard-coded duration of the two phases (yello, then yellow-red)
  */
 unsigned long transitionDuration[2] = {4000, 500};
-unsigned char startColor[2][3] = {{255,255,0},{255,255,0}};
-unsigned char endColor[2][3] = {{255,255,0},{255,0,0}};;
+unsigned char startColor[2][3] = {{255,255,100},{255,255,100}};
+unsigned char endColor[2][3] = {{255,255,100},{255,164,0}};
 
 // ==== Private =====
 
