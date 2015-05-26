@@ -3,6 +3,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <time.h>
 #include <emscripten.h>
 #include "color_generator.h"
 
@@ -10,15 +11,12 @@
 extern "C" {
 #endif
 
-NextColorFunction getSingleDirectionColorFunc();
-
-TiltBox * mallocTiltBox();
+/**
+ * Mollocs and initializes a tilt light box object
+ */
+TiltBox * createTiltBox();
 
 void getNextColor(TiltBox *box, unsigned char *result);
-
-int getColorRed(unsigned char *rgb);
-int getColorGreen(unsigned char *rgb);
-int getColorBlue(unsigned char *rgb);
 
 void runCycle(TiltBox *box);
 

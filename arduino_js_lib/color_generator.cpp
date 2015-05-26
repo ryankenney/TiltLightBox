@@ -9,7 +9,12 @@ extern "C" {
 
 // ==== Private =====
 
-unsigned long (*millis)();
+typedef struct COLOR_GENERATOR_PRIV {
+	unsigned long (*millis)();
+	int (*random)(int, int);
+} ColorGeneratorPriv;
+
+ColorGeneratorPriv color_generator_private;
 
 /**
  * Returns the duration of time between beginning/end times. If end is before the start time,
@@ -36,17 +41,23 @@ unsigned char getColorComponentForTime(TiltBox *box, float transitionProgress, i
 
 // ==== Public =====
 
-#define COLOR_ALG_FIRE 1
-
 unsigned long currentMillis() {
-	return millis();
+	return color_generator_private.millis();
 }
 
 void setCurrentMillisFunc(unsigned long (*func)()) {
-	millis = func;
+	color_generator_private.millis = func;
 }
 
-void setAlg(TiltBox *box, int algId) {
+unsigned long randomValue(int low, int high) {
+	return color_generator_private.random(low, high);
+}
+
+void setRandomValueFunc(int (*func)(int,int)) {
+	color_generator_private.random = func;
+}
+
+void setColorAlg(TiltBox *box, int algId) {
 	switch (algId) {
 	case COLOR_ALG_FIRE:
 		box->colorAlg = COLOR_ALG_FIRE;
@@ -55,23 +66,12 @@ void setAlg(TiltBox *box, int algId) {
 	}
 }
 
-void nextColorInASingleDirection(TiltBox *box, unsigned char *result) {
-	unsigned long currentTime = currentMillis();
-	unsigned long currentDuration = getDuration(box->transitionStartTime, currentTime);
-	float transitionProgress;
-	if (currentDuration > box->transitionDuration) {
-		box->transitionStartTime = currentTime;
-		transitionProgress = 0.0;
-	} else {
-		transitionProgress = ((float) currentDuration) / ((float) box->transitionDuration);
+void getColor(TiltBox *box, unsigned char *result) {
+	switch (box->colorAlg) {
+	case COLOR_ALG_FIRE:
+		color_alg_fire_getColor(&box->fireAlgState, result);
+		break;
 	}
-
-	// TODO [rkenney]: Remove debug
-	// printf("%lu - %lu = %lu = %f%%\n", currentTime, box->transitionStartTime, currentDuration, transitionProgress*100.0);
-
-	result[0] = getColorComponentForTime(box, transitionProgress, 0);
-	result[1] = getColorComponentForTime(box, transitionProgress, 1);
-	result[2] = getColorComponentForTime(box, transitionProgress, 2);
 }
 
 #ifdef __cplusplus

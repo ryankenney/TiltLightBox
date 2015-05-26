@@ -8,6 +8,7 @@ extern "C" {
 #endif
 
 typedef struct FIRE_ALG_STATE {
+	char currentPhase;
 	unsigned long cycleStartTime;
 } FireAlgState;
 

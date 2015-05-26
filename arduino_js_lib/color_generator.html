@@ -14,6 +14,8 @@ var DELAY_MILLIS = 20;
 var boxes = [];
 var boxesIndex = [];
 
+var COLOR_ALG_FIRE = 1;
+
 /**
  * Draws a colored box on the canvas, with the specified color,
  * and at the specified location
@@ -27,8 +29,8 @@ function drawBox(r, g, b, x, y) {
 	context.beginPath();
 	context.moveTo(x, y);
 	context.lineTo(x+70, y);
-	context.lineTo(x+65, y+100);
-	context.lineTo(x+5, y+100);
+	context.lineTo(x+65, y+60);
+	context.lineTo(x+5, y+60);
 	context.closePath();
 	context.fill();
 	context.stroke();
@@ -48,10 +50,12 @@ var TiltBox = function(nativeBox, x, y) {
  * and then adds the object to the provided collections
  */
 var createTiltBox = function(x, y, list, index) {
-	var nativeBox = Module.ccall('mallocTiltBox', 'number');
+	var nativeBox = Module.ccall('createTiltBox', 'number');
 	var box = new TiltBox(nativeBox, x, y);
 	list.push(box);
 	index[nativeBox] = box;
+	// Set a default color alg
+	Module.ccall('setColorAlg', null, ['number', 'number'], [nativeBox, COLOR_ALG_FIRE]);
 }
 
 /**
@@ -81,14 +85,16 @@ var Module = {
 
 		// Create tilt light boxes, each with an internal native component
 		var x = [10, 100, 190, 280, 370];
-		var y = [10, 120, 230];
+		var y = [10, 80, 150];
 		createTiltBox(x[0], y[1], boxes, boxesIndex);
 		createTiltBox(x[0], y[2], boxes, boxesIndex);
 		createTiltBox(x[1], y[2], boxes, boxesIndex);
 		createTiltBox(x[2], y[0], boxes, boxesIndex);
 		createTiltBox(x[2], y[1], boxes, boxesIndex);
 		createTiltBox(x[2], y[2], boxes, boxesIndex);
+		createTiltBox(x[3], y[1], boxes, boxesIndex);
 		createTiltBox(x[3], y[2], boxes, boxesIndex);
+		createTiltBox(x[4], y[0], boxes, boxesIndex);
 		createTiltBox(x[4], y[1], boxes, boxesIndex);
 		createTiltBox(x[4], y[2], boxes, boxesIndex);
 

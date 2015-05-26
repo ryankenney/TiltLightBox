@@ -34,8 +34,11 @@ trap 'handle_error' ERR
 # ===============
 
 emcc \
-	color_generator.cpp color_generator_jsapi.cpp -o color_generator.js \
-	-s EXPORTED_FUNCTIONS="['_main','_mallocTiltBox','_getColorRed','_getColorGreen','_getColorBlue','_runCycle']" \
+	color_generator.cpp \
+	color_alg_fire.cpp \
+	color_generator_jsapi.cpp \
+	-o color_generator.js \
+	-s EXPORTED_FUNCTIONS="['_main','_createTiltBox','_runCycle','_setColorAlg']" \
 	-s RESERVED_FUNCTION_POINTERS=2 \
 	-s NO_EXIT_RUNTIME=1 \
 	-s ASSERTIONS=2
