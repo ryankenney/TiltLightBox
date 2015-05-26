@@ -9,7 +9,7 @@
 </style>
 <script type="text/javascript">
 
-var DELAY_MILLIS = 10;
+var DELAY_MILLIS = 20;
 
 var boxes = [];
 var boxesIndex = [];
@@ -67,12 +67,17 @@ var Module = {
 	// Treat it like body.onload().
 	onRuntimeInitialized: function() {
 
-		// Register a "writeColor()" callback method with the native code
+		// Register a callback methods (Javascript to call from C code)
+		var millisFunc = Runtime.addFunction(function() {
+			return new Date().getTime();
+		});
 		var writeColorFunc = Runtime.addFunction(function(nativeBox,r,g,b) {
+			// TODO [rkenney]: Remove debug
+			// console.log("RGB: "+r+','+g+','+b);
 			var box = boxesIndex[nativeBox];
 			drawBox(r, g, b, box.x, box.y);
 		});
-		Module.callMain([writeColorFunc.toString()]);
+		Module.callMain([millisFunc.toString(),writeColorFunc.toString()]);
 
 		// Create tilt light boxes, each with an internal native component
 		var x = [10, 100, 190, 280, 370];
