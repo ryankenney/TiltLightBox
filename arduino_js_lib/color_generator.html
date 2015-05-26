@@ -24,8 +24,8 @@ function drawBox(r, g, b, x, y) {
 	var canvas = document.getElementById("main_canvas");
 	var context = canvas.getContext("2d");
 	context.fillStyle = "rgb("+r+","+g+","+b+")";
-	context.strokeStyle = "grey";
-	context.lineWidth = 3;
+	// context.strokeStyle = "grey";
+	// context.lineWidth = 3;
 	context.beginPath();
 	context.moveTo(x, y);
 	context.lineTo(x+70, y);
@@ -111,8 +111,19 @@ var Module = {
 
 </head>
 
-<body>
+<body onload="document.getElementById('audio_control').volume = 0.2">
+	<p>Theme:
+	<form action="">
+	<input type="radio" name="sex" value="" checked="checked">Camp Fire<br>
+	</form>
+	</p>
+
 	<canvas id="main_canvas" width="500" height="400"></canvas>
+	<audio id="audio_control" controls autoplay loop>
+		<source src="Camp-Fire-Burning-SoundBible.com-783712989.mp3" type="audio/mpeg">
+		Your browser does not support the audio element.
+	</audio>
+
 </body>
 
 </html>
