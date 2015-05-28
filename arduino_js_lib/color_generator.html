@@ -4,7 +4,7 @@
 <head>
 <style>
 #main_canvas {
-	background-color: black;
+	background-color: #404030;
 }
 </style>
 <script type="text/javascript">
@@ -14,7 +14,7 @@ var DELAY_MILLIS = 10;
 var boxes = [];
 var boxesIndex = [];
 
-var COLOR_ALG_FIRE = 1;
+var COLOR_ALG_PURPLE_CALM = 1;
 
 /**
  * Draws a colored box on the canvas, with the specified color,
@@ -33,7 +33,7 @@ function drawBox(r, g, b, x, y) {
 	context.lineTo(x+5, y+60);
 	context.closePath();
 	context.fill();
-	context.stroke();
+	// context.stroke();
 }
 
 /**
@@ -55,7 +55,7 @@ var createTiltBox = function(x, y, list, index) {
 	list.push(box);
 	index[nativeBox] = box;
 	// Set a default color alg
-	Module.ccall('setColorAlg', null, ['number', 'number'], [nativeBox, COLOR_ALG_FIRE]);
+	Module.ccall('setColorAlg', null, ['number', 'number'], [nativeBox, COLOR_ALG_PURPLE_CALM]);
 }
 
 /**
@@ -114,7 +114,7 @@ var Module = {
 <body onload="document.getElementById('audio_control').volume = 0.2">
 	<p>Theme:
 	<form action="">
-	<input type="radio" name="sex" value="" checked="checked">Camp Fire<br>
+	<input type="radio" name="COLOR_ALG_PURPLE_CALM" value="COLOR_ALG_PURPLE_CALM" checked="checked">Purple Calm<br>
 	</form>
 	</p>
 

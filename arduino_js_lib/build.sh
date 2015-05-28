@@ -35,7 +35,8 @@ trap 'handle_error' ERR
 
 emcc \
 	color_generator.cpp \
-	color_alg_fire.cpp \
+	color_phase.cpp \
+	color_alg_purple_calm.cpp \
 	color_generator_jsapi.cpp \
 	-o color_generator.js \
 	-s EXPORTED_FUNCTIONS="['_main','_createTiltBox','_runCycle','_setColorAlg']" \

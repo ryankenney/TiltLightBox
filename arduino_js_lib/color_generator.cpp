@@ -68,17 +68,17 @@ void sleepMillis(unsigned long millis) {
 
 void setColorAlg(TiltBox *box, int algId) {
 	switch (algId) {
-	case COLOR_ALG_FIRE:
-		box->colorAlg = COLOR_ALG_FIRE;
-		color_alg_fire_init(&box->fireAlgState);
+	case COLOR_ALG_PURPLE_CALM:
+		box->colorAlg = algId;
+		color_alg_purple_calm__init(&box->purpleCalmAlgState);
 		break;
 	}
 }
 
 void getColor(TiltBox *box, unsigned char *result) {
 	switch (box->colorAlg) {
-	case COLOR_ALG_FIRE:
-		color_alg_fire_getColor(&box->fireAlgState, result);
+	case COLOR_ALG_PURPLE_CALM:
+		color_alg_purple_calm__getColor(&box->purpleCalmAlgState, result);
 		break;
 	}
 }

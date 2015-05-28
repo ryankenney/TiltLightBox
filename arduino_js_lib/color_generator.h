@@ -2,7 +2,8 @@
 #define COLOR_GENERATOR_INCLUDED
 
 #include <limits.h>
-#include "color_alg_fire.h"
+#include "color_phase.h"
+#include "color_alg_purple_calm.h"
 
 // TODO [rkenney]: Remove debug
 //#include <stdio.h>
@@ -10,7 +11,7 @@
 #define DELAY_MILLIS 10;
 #define COLOR_INCREMENT 4;
 
-#define COLOR_ALG_FIRE 1
+#define COLOR_ALG_PURPLE_CALM 1
 
 #ifdef __cplusplus
 extern "C" {
@@ -22,7 +23,7 @@ typedef struct TILT_BOX {
 	unsigned long transitionStartTime;
 	unsigned long transitionDuration;
 	int colorAlg;
-	FireAlgState fireAlgState;
+	PurpleCalmAlgState purpleCalmAlgState;
 } TiltBox;
 
 void getColor(TiltBox *box, unsigned char *result);
