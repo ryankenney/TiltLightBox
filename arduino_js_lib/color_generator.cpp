@@ -12,6 +12,7 @@ extern "C" {
 typedef struct COLOR_GENERATOR_PRIV {
 	unsigned long (*millis)();
 	int (*random)(int, int);
+	void (*sleepMillis)(unsigned long);
 } ColorGeneratorPriv;
 
 ColorGeneratorPriv color_generator_private;
@@ -55,6 +56,14 @@ unsigned long randomValue(int low, int high) {
 
 void setRandomValueFunc(int (*func)(int,int)) {
 	color_generator_private.random = func;
+}
+
+void setSleepMillisFunc(void (*func)(unsigned long)) {
+	color_generator_private.sleepMillis = func;
+}
+
+void sleepMillis(unsigned long millis) {
+	color_generator_private.sleepMillis(millis);
 }
 
 void setColorAlg(TiltBox *box, int algId) {

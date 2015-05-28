@@ -7,6 +7,12 @@
 extern "C" {
 #endif
 
+typedef struct COLOR_PHASE {
+	unsigned char startColor[3];
+	unsigned char endColor[3];
+	unsigned long duration;
+} ColorPhase;
+
 typedef struct FIRE_ALG_STATE {
 	char currentPhase;
 	unsigned long cycleStartTime;

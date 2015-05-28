@@ -5,7 +5,7 @@
 #include "color_alg_fire.h"
 
 // TODO [rkenney]: Remove debug
-// #include <stdio.h>
+//#include <stdio.h>
 
 #define DELAY_MILLIS 10;
 #define COLOR_INCREMENT 4;
@@ -48,6 +48,16 @@ unsigned long randomValue(int low, int high);
  * Sets the implementation of randomValue()
  */
 void setRandomValueFunc(int (*func)(int,int));
+
+/**
+ * A blocking sleep function. Similar to delay() for arduino.
+ */
+void sleepMillis(unsigned long millis);
+
+/**
+ * Sets the implementation of sleepMillis()
+ */
+void setSleepMillisFunc(void (*func)(unsigned long));
 
 /**
  * Sets the color algorithm to use for the box

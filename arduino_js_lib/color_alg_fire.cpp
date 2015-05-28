@@ -3,11 +3,23 @@
 /**
  * The hard-coded duration of the two phases (yello, then yellow-red)
  */
-unsigned long transitionDuration[2] = {4000, 500};
-unsigned char startColor[2][3] = {{255,255,100},{255,255,100}};
-unsigned char endColor[2][3] = {{255,255,100},{255,164,0}};
+//unsigned long transitionDuration[2] = {4000, 4000};
+//unsigned char startColor[2][3] = {{164,164,164},{255,0,255}};
+//unsigned char endColor[2][3] = {{255,0,255},{164,164,164}};
 
-// ==== Private =====
+typedef struct COLOR_PROGRESS {
+	char phaseIndex;
+	float phaseProgress;
+} ColorProgress;
+
+ColorPhase phases[2] =  {
+	{{164,164,164},{255,0,255},4000},
+	{{255,0,255},{164,164,164},4000}
+};
+
+int phaseCount = sizeof(phases) / sizeof(ColorPhase);
+
+// ==== Private ====
 
 /**
  * Returns the duration of time between beginning/end times. If end is before the start time,
@@ -22,16 +34,6 @@ unsigned long getDuration(unsigned long start, unsigned long end) {
 	}
 }
 
-unsigned char getColorComponentForTime(FireAlgState *state, float transitionProgress, int colorComponentIndex) {
-	int totalColorTransition = (int) endColor[state->currentPhase][colorComponentIndex] - (int) startColor[state->currentPhase][colorComponentIndex];
-	unsigned char colorValue = transitionProgress * (float) totalColorTransition + startColor[state->currentPhase][colorComponentIndex];
-
-	// TODO [rkenney]: Remove debug
-	// printf("color: %d - %d = %d -> %d\n", endColor[state->currentPhase][colorComponentIndex], startColor[state->currentPhase][colorComponentIndex], totalColorTransition, colorValue);
-
-	return colorValue;
-}
-
 void nextPhase(FireAlgState *state) {
 	if (state->currentPhase < 1) {
 		state->cycleStartTime = currentMillis();
@@ -41,30 +43,47 @@ void nextPhase(FireAlgState *state) {
 	}
 }
 
+void getProgress(ColorPhase *phases, int phaseCount, unsigned long currentDuration, ColorProgress *result) {
+	unsigned long skippedDuration = 0;
+	for (char i = 0; i<phaseCount; i++) {
+		if (currentDuration < skippedDuration + phases[i].duration) {
+			result->phaseIndex = i;
+			result->phaseProgress  = ((float) (currentDuration - skippedDuration)) / (float) phases[i].duration;
+			return;
+		}
+		skippedDuration += phases[i].duration;
+	}
+}
+
+unsigned char getColorComponentForProgress(ColorPhase *phases, ColorProgress *progress, char componentIndex) {
+	ColorPhase *phase = &phases[progress->phaseIndex];
+	int totalColorTransition = ((int) phase->endColor[componentIndex]) - ((int) phase->startColor[componentIndex]);
+	unsigned char colorValue = progress->phaseProgress * (float) totalColorTransition + (float) phase->startColor[componentIndex];
+	return colorValue;
+}
+
 // ==== public =====
 
 void color_alg_fire_init(FireAlgState *state) {
-	// Randomly stagger start times
-	int halfFisrtDuration = transitionDuration[0]/2;
 	state->currentPhase = 0;
-	state->cycleStartTime = currentMillis()-randomValue(-halfFisrtDuration, halfFisrtDuration);
+	state->cycleStartTime = currentMillis();
 }
 
 void color_alg_fire_getColor(FireAlgState *state, unsigned char * result) {
 	unsigned long currentTime = currentMillis();
 	unsigned long currentDuration = getDuration(state->cycleStartTime, currentTime);
-	float transitionProgress;
-	if (currentDuration > transitionDuration[state->currentPhase]) {
-		nextPhase(state);
-	} else {
-		transitionProgress = ((float) currentDuration) / ((float) transitionDuration[state->currentPhase]);
+
+	ColorProgress progress = {-1, 0.0};
+
+	getProgress(phases, phaseCount, currentDuration, &progress);
+	if (progress.phaseIndex < 0) {
+		color_alg_fire_init(state);
+		progress.phaseIndex = 0;
+		progress.phaseProgress = 0.0;
 	}
 
-	// TODO [rkenney]: Remove debug
-	// printf("%lu - %lu = %lu = %f%%\n", currentTime, state->cycleStartTime, currentDuration, transitionProgress*100.0);
-
-	result[0] = getColorComponentForTime(state, transitionProgress, 0);
-	result[1] = getColorComponentForTime(state, transitionProgress, 1);
-	result[2] = getColorComponentForTime(state, transitionProgress, 2);
+	result[0] = getColorComponentForProgress(phases, &progress, 0);
+	result[1] = getColorComponentForProgress(phases, &progress, 1);
+	result[2] = getColorComponentForProgress(phases, &progress, 2);
 }
 
