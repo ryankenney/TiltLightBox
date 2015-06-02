@@ -13,10 +13,10 @@ void setup() {
 
   Serial.begin(9600);
 
-  pinMode(axisPinN, INPUT);
-  pinMode(axisPinS, INPUT);
-  pinMode(axisPinE, INPUT);
-  pinMode(axisPinW, INPUT);
+  pinMode(axisPinN, INPUT_PULLUP);
+  pinMode(axisPinS, INPUT_PULLUP);
+  pinMode(axisPinE, INPUT_PULLUP);
+  pinMode(axisPinW, INPUT_PULLUP);
 
   pinMode(ledPinRed, OUTPUT);
   pinMode(ledPinGreen, OUTPUT);
@@ -35,14 +35,13 @@ void loop(){
   axisE = digitalRead(axisPinE);
   axisW = digitalRead(axisPinW);
 
-
-  if (axisN == HIGH) {
+  if (isActive(axisN)) {
       writeState(axisN, axisS, axisE, axisW, 255, 0, 0);
-  } else if (axisS == HIGH) {
+  } else if (isActive(axisS)) {
       writeState(axisN, axisS, axisE, axisW, 0, 255, 0);
-  } else if (axisE == HIGH) {
+  } else if (isActive(axisE)) {
       writeState(axisN, axisS, axisE, axisW, 0, 0, 255);
-  } else if (axisW == HIGH) {
+  } else if (isActive(axisW)) {
       writeState(axisN, axisS, axisE, axisW, 255, 0, 255);
   } else {
       writeState(axisN, axisS, axisE, axisW, 255, 255, 255);
@@ -60,16 +59,16 @@ void writeState(int n, int s, int e, int w, int r, int g, int b) {
   Serial.print(b);
   Serial.print("]");
   Serial.print(" ");
-  if (n == HIGH) {
+  if (isActive(n)) {
     Serial.print("N");
   }
-  if (s == HIGH) {
+  if (isActive(s)) {
     Serial.print("S");
   }
-  if (e == HIGH) {
+  if (isActive(e)) {
     Serial.print("E");
   }
-  if (w == HIGH) {
+  if (isActive(w)) {
     Serial.print("W");
   }
   Serial.println();
@@ -78,3 +77,8 @@ void writeState(int n, int s, int e, int w, int r, int g, int b) {
   analogWrite(ledPinBlue, b);
 }
 
+bool isActive(int pinValue) {
+  // NOTE: We invert the read value so we can make use of the
+  // internal pull up resistors
+  return (LOW == pinValue);
+}
