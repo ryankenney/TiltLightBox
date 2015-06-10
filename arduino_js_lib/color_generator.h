@@ -6,12 +6,16 @@
 #include "color_alg_purple_calm.h"
 
 // TODO [rkenney]: Remove debug
-//#include <stdio.h>
+// #include <stdio.h>
 
 #define DELAY_MILLIS 10;
 #define COLOR_INCREMENT 4;
 
-#define COLOR_ALG_PURPLE_CALM 1
+#define COLOR_ALG__PURPLE_CALM 1
+
+#define BOX_STATE__UPRIGHT 0
+#define BOX_STATE__TILTING 1
+#define BOX_STATE__TILTED 2
 
 #ifdef __cplusplus
 extern "C" {
@@ -22,6 +26,7 @@ typedef struct TILT_BOX {
 	unsigned char endColor[3];
 	unsigned long transitionStartTime;
 	unsigned long transitionDuration;
+	char boxState;
 	int colorAlg;
 	PurpleCalmAlgState purpleCalmAlgState;
 } TiltBox;
@@ -64,6 +69,11 @@ void setSleepMillisFunc(void (*func)(unsigned long));
  * Sets the color algorithm to use for the box
  */
 void setColorAlg(TiltBox *box, int algId);
+
+/**
+ * Sets the current state of the box. Box state is one of the BOX_STATE__ constants.
+ */
+void setBoxState(TiltBox *box, char boxState);
 
 #ifdef __cplusplus
 }

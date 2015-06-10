@@ -26,6 +26,7 @@ TiltBox* createTiltBox() {
 	ptr->endColor[2] = 0;
 	ptr->transitionStartTime = currentMillis();
 	ptr->transitionDuration = 2000;
+	ptr->boxState = BOX_STATE__UPRIGHT;
 
 	// TODO [rkenney]: Remove debug
 	// printf("RGB: %d,%d,%d\n", ptr->startColor[0], ptr->startColor[1], ptr->startColor[2]);

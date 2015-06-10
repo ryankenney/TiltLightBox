@@ -14,7 +14,7 @@ var DELAY_MILLIS = 10;
 var boxes = [];
 var boxesIndex = [];
 
-var COLOR_ALG_PURPLE_CALM = 1;
+var COLOR_ALG__PURPLE_CALM = 1;
 
 /**
  * Draws a colored box on the canvas, with the specified color,
@@ -55,7 +55,7 @@ var createTiltBox = function(x, y, list, index) {
 	list.push(box);
 	index[nativeBox] = box;
 	// Set a default color alg
-	Module.ccall('setColorAlg', null, ['number', 'number'], [nativeBox, COLOR_ALG_PURPLE_CALM]);
+	Module.ccall('setColorAlg', null, ['number', 'number'], [nativeBox, COLOR_ALG__PURPLE_CALM]);
 }
 
 /**
@@ -64,6 +64,14 @@ var createTiltBox = function(x, y, list, index) {
 var cycleBox = function(box) {
 	Module.ccall('runCycle', null, ['number'], [box.nativeBox]);
 };
+
+// TODO [rkenney]: Remove debug
+var lastCycledBoxState = 0;
+var cycleBoxState = function() {
+	lastCycledBoxState = (lastCycledBoxState+1) % 3;
+	console.log("Changing state to: "+lastCycledBoxState);
+	Module.ccall('setBoxState', null, ['number', 'number'], [boxes[0].nativeBox, lastCycledBoxState]);
+}
 
 var Module = {
 
@@ -102,6 +110,12 @@ var Module = {
 		for (i in boxes) {
 			window.setInterval(cycleBox, DELAY_MILLIS, boxes[i]);
 		}
+
+		// TODO [rkenney]: Remove debug
+		// window.setInterval(cycleBoxState, 3000);
+		Module.ccall('setBoxState', null, ['number', 'number'], [boxes[1].nativeBox, 0]);
+		Module.ccall('setBoxState', null, ['number', 'number'], [boxes[2].nativeBox, 1]);
+		Module.ccall('setBoxState', null, ['number', 'number'], [boxes[3].nativeBox, 2]);
 	}
 };
 </script>
@@ -114,7 +128,7 @@ var Module = {
 <body onload="document.getElementById('audio_control').volume = 0.2">
 	<p>Theme:
 	<form action="">
-	<input type="radio" name="COLOR_ALG_PURPLE_CALM" value="COLOR_ALG_PURPLE_CALM" checked="checked">Purple Calm<br>
+	<input type="radio" name="COLOR_ALG__PURPLE_CALM" value="COLOR_ALG__PURPLE_CALM" checked="checked">Purple Calm<br>
 	</form>
 	</p>
 

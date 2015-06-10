@@ -39,7 +39,7 @@ emcc \
 	color_alg_purple_calm.cpp \
 	color_generator_jsapi.cpp \
 	-o color_generator.js \
-	-s EXPORTED_FUNCTIONS="['_main','_createTiltBox','_runCycle','_setColorAlg']" \
+	-s EXPORTED_FUNCTIONS="['_main','_createTiltBox','_runCycle','_setColorAlg','_setBoxState']" \
 	-s RESERVED_FUNCTION_POINTERS=2 \
 	-s NO_EXIT_RUNTIME=1 \
 	-s ASSERTIONS=2

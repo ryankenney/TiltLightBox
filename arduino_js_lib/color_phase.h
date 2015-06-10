@@ -5,6 +5,10 @@
 extern "C" {
 #endif
 
+/**
+ * Color phases define a transition between two colors with a given duration.
+ * They are generally strung together (in arrays) to generate patterns.
+ */
 typedef struct COLOR_PHASE {
 	unsigned char startColor[3];
 	unsigned char endColor[3];
