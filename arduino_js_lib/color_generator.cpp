@@ -17,11 +17,26 @@ typedef struct COLOR_GENERATOR_PRIV {
 
 ColorGeneratorPriv color_generator_private;
 
-void initColorAlg(TiltBox *box) {
+void color_generator_initColorAlg(TiltBox *box) {
 	switch (box->colorAlg) {
 	case COLOR_ALG__PURPLE_CALM:
 		color_alg_purple_calm__init(&box->purpleCalmAlgState);
 		break;
+	}
+}
+
+/**
+ * Gets the color for the current time from the specific algorithm assigned
+ * to the box. Returns false if no color was found because we've exceeded
+ * the duration of the color cycle.
+ */
+bool color_generator_getColorFromAlg(TiltBox *box, unsigned char *result) {
+	switch (box->colorAlg) {
+	case COLOR_ALG__PURPLE_CALM:
+		return color_alg_purple_calm__getColor(&box->purpleCalmAlgState, box->boxState, result);
+	default:
+		// TODO [rkenney]: Throw an exception?
+		return false;
 	}
 }
 
@@ -53,21 +68,31 @@ void sleepMillis(unsigned long millis) {
 
 void setColorAlg(TiltBox *box, int algId) {
 	box->colorAlg = algId;
-	initColorAlg(box);
+	color_generator_initColorAlg(box);
 }
 
 void setBoxState(TiltBox *box, char boxState) {
 	box->boxState = boxState;
-	initColorAlg(box);
+	color_generator_initColorAlg(box);
 }
 
 void getColor(TiltBox *box, unsigned char *result) {
-	switch (box->colorAlg) {
-	case COLOR_ALG__PURPLE_CALM:
-		color_alg_purple_calm__getColor(&box->purpleCalmAlgState, box->boxState, result);
-		break;
+	bool colorFoundWithinCycle = color_generator_getColorFromAlg(box, result);
+	if (colorFoundWithinCycle) {
+		return;
 	}
+	// Possibly roll to next state
+	if (box->boxState == BOX_STATE__TILTING) {
+		setBoxState(box, BOX_STATE__TILTED);
+	}
+	// Else reset color cycle
+	else {
+		color_generator_initColorAlg(box);
+	}
+	// Re-get color
+	color_generator_getColorFromAlg(box, result);
 }
+
 
 #ifdef __cplusplus
 }

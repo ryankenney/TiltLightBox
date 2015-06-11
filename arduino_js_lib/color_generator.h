@@ -31,6 +31,9 @@ typedef struct TILT_BOX {
 	PurpleCalmAlgState purpleCalmAlgState;
 } TiltBox;
 
+/**
+ * Returns the color of that box for the current time, given the box's state
+ */
 void getColor(TiltBox *box, unsigned char *result);
 
 /**
@@ -72,6 +75,8 @@ void setColorAlg(TiltBox *box, int algId);
 
 /**
  * Sets the current state of the box. Box state is one of the BOX_STATE__ constants.
+ * Note that the box will automatically transition from BOX_STATE__TILTING
+ * to BOX_STATE__TILTED when the former animation ends.
  */
 void setBoxState(TiltBox *box, char boxState);
 

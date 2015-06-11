@@ -16,7 +16,12 @@ typedef struct PURPLE_CALM_ALG_STATE {
  */
 void color_alg_purple_calm__init(PurpleCalmAlgState *state);
 
-void color_alg_purple_calm__getColor(PurpleCalmAlgState *state, char boxState, unsigned char * result);
+/**
+ * Gets the color for the current time from the specific algorithm assigned
+ * to the box. Returns false if no color was found because we've exceeded
+ * the duration of the color cycle.
+ */
+bool color_alg_purple_calm__getColor(PurpleCalmAlgState *state, char boxState, unsigned char * result);
 
 #ifdef __cplusplus
 }

@@ -16,7 +16,7 @@ typedef struct COLOR_PHASE {
 } ColorPhase;
 
 /**
- * Sets the RGB value computed by applying the current
+ * Gets the RGB value computed by applying the current
  * cycle time to the provided color phase definitions.
  * Returns false if the current cycle time exceeds the
  * duration of all phases.
