@@ -37,7 +37,7 @@ void color_alg_purple_calm__init(PurpleCalmAlgState *state) {
 	state->cycleStartTime = currentMillis();
 }
 
-void color_alg_purple_calm__getColor(PurpleCalmAlgState *state, char boxState, unsigned char * result) {
+bool color_alg_purple_calm__getColor(PurpleCalmAlgState *state, char boxState, unsigned char * result) {
 
 	// TODO [rkenney]: Replace this with the array definition commented out above
 	ColorPhase *phase;
@@ -53,10 +53,6 @@ void color_alg_purple_calm__getColor(PurpleCalmAlgState *state, char boxState, u
 		break;
 	}
 
-	bool colorFound = color_phase__getColor(state->cycleStartTime, phase, phaseCounts[boxState], result);
-	if (!colorFound) {
-		color_alg_purple_calm__init(state);
-		color_phase__getColor(state->cycleStartTime, phase, phaseCounts[boxState], result);
-	}
+	return color_phase__getColor(state->cycleStartTime, phase, phaseCounts[boxState], result);
 }
 
