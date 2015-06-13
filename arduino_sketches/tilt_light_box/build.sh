@@ -34,11 +34,11 @@ trap 'handle_error' ERR
 # ===============
 
 emcc \
-	color_generator.cpp \
-	color_phase.cpp \
-	color_alg_purple_calm.cpp \
-	color_generator_jsapi.cpp \
-	-o color_generator.js \
+	core_logic/tilt_light_box.cpp \
+	core_logic/color_phase.cpp \
+	core_logic/color_alg_purple_calm.cpp \
+	js_adaptor/tilt_light_box_jsapi.cpp \
+	-o web/tilt_light_box.js \
 	-s EXPORTED_FUNCTIONS="['_main','_createTiltBox','_runCycle','_setColorAlg','_setBoxState']" \
 	-s RESERVED_FUNCTION_POINTERS=2 \
 	-s NO_EXIT_RUNTIME=1 \

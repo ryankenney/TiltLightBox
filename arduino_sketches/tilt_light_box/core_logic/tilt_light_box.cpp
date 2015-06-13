@@ -1,4 +1,4 @@
-#include "color_generator.h"
+#include "tilt_light_box.h"
 
 // TODO [rkenney]: Remove debug
 // #include <stdio.h>

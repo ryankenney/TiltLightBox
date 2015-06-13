@@ -1,4 +1,4 @@
-#include "color_generator_jsapi.h"
+#include "tilt_light_box_jsapi.h"
 
 #ifdef __cplusplus
 extern "C" {

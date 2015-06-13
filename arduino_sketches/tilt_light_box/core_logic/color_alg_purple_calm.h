@@ -1,4 +1,4 @@
-#include "color_generator.h"
+#include "tilt_light_box.h"
 
 #ifndef COLOR_ALG__PURPLE_CALM_INCLUDED
 #define COLOR_ALG__PURPLE_CALM_INCLUDED

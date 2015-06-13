@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <time.h>
 #include <emscripten.h>
-#include "color_generator.h"
+#include "../core_logic/tilt_light_box.h"
 
 #ifdef __cplusplus
 extern "C" {
