@@ -11,11 +11,6 @@
 extern "C" {
 #endif
 
-/**
- * Mollocs and initializes a tilt light box object
- */
-TiltBox * createTiltBox();
-
 void getNextColor(TiltBox *box, unsigned char *result);
 
 void runCycle(TiltBox *box);

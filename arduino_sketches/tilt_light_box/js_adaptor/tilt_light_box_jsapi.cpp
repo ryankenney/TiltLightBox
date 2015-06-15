@@ -14,26 +14,6 @@ int myRandom(int low, int high) {
 
 // ==== Public =====
 
-TiltBox* createTiltBox() {
-	TiltBox* ptr = (TiltBox*) malloc(sizeof(TiltBox));
-
-	// TODO [rkenney]: Remove debug. Defines the color pattern.
-	ptr->startColor[0] = 255;
-	ptr->startColor[1] = 255;
-	ptr->startColor[2] = 0;
-	ptr->endColor[0] = 255;
-	ptr->endColor[1] = 0;
-	ptr->endColor[2] = 0;
-	ptr->transitionStartTime = currentMillis();
-	ptr->transitionDuration = 2000;
-	ptr->boxState = BOX_STATE__UPRIGHT;
-
-	// TODO [rkenney]: Remove debug
-	// printf("RGB: %d,%d,%d\n", ptr->startColor[0], ptr->startColor[1], ptr->startColor[2]);
-
-	return ptr;
-}
-
 int main(int argc, char **argv) {
 
 	srand(time(NULL));

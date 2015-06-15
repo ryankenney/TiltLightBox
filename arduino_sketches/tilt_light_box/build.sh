@@ -8,6 +8,11 @@ handle_error() {
 }
 trap 'handle_error' ERR
 
+
+pushd core_logic
+zip -r ../lib/TiltLightBox.zip *
+popd
+
 # ===============
 # Compile Options
 # ===============
@@ -43,3 +48,4 @@ emcc \
 	-s RESERVED_FUNCTION_POINTERS=2 \
 	-s NO_EXIT_RUNTIME=1 \
 	-s ASSERTIONS=2
+

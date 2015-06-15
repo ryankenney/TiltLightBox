@@ -1,6 +1,7 @@
 #ifndef COLOR_GENERATOR_INCLUDED
 #define COLOR_GENERATOR_INCLUDED
 
+#include <stdlib.h>
 #include <limits.h>
 #include "color_phase.h"
 #include "color_alg_purple_calm.h"
@@ -67,6 +68,11 @@ void sleepMillis(unsigned long millis);
  * Sets the implementation of sleepMillis()
  */
 void setSleepMillisFunc(void (*func)(unsigned long));
+
+/**
+ * Mollocs and initializes a tilt light box object
+ */
+TiltBox * createTiltBox();
 
 /**
  * Sets the color algorithm to use for the box
