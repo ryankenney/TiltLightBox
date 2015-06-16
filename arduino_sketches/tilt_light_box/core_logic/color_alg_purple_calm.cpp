@@ -18,12 +18,11 @@ ColorPhase phasesTilted[] =  {
 	{{64,255,64},{64,164,64},1000},
 };
 
-// TODO [rkenney]: Figure out how to make this work
-// ColorPhase phases[3]* = {
-// 	phasesStanding,
-// 	phasesTilting,
-// 	phasesTilted
-// };
+ColorPhase *phases[] = {
+	phasesUpright,
+	phasesTilting,
+	phasesTilted
+};
 
 int phaseCounts[] = {
 	sizeof(phasesUpright) / sizeof(ColorPhase),
@@ -38,21 +37,6 @@ void color_alg_purple_calm__init(PurpleCalmAlgState *state) {
 }
 
 bool color_alg_purple_calm__getColor(PurpleCalmAlgState *state, char boxState, unsigned char * result) {
-
-	// TODO [rkenney]: Replace this with the array definition commented out above
-	ColorPhase *phase;
-	switch (boxState) {
-	case BOX_STATE__UPRIGHT:
-		phase = phasesUpright;
-		break;
-	case BOX_STATE__TILTING:
-		phase = phasesTilting;
-		break;
-	case BOX_STATE__TILTED:
-		phase = phasesTilted;
-		break;
-	}
-
-	return color_phase__getColor(state->cycleStartTime, phase, phaseCounts[boxState], result);
+	return color_phase__getColor(state->cycleStartTime, phases[boxState], phaseCounts[boxState], result);
 }
 
