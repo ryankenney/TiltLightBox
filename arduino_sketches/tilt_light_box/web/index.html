@@ -7,6 +7,7 @@
 	background-color: #404030;
 }
 </style>
+<script src="jquery-2.1.4.js"></script>
 <script type="text/javascript">
 
 var DELAY_MILLIS = 10;
@@ -15,6 +16,7 @@ var boxes = [];
 var boxesIndex = [];
 
 var COLOR_ALG__PURPLE_CALM = 1;
+var COLOR_ALG__DISCO = 2;
 
 /**
  * Draws a colored box on the canvas, with the specified color,
@@ -68,9 +70,15 @@ var cycleBox = function(box) {
 	Module.ccall('runCycle', null, ['number'], [box.nativeBox]);
 };
 
-var resetAllBoxes = function(box) {
+var resetAllBoxes = function() {
 	for (i in boxes) {
 		Module.ccall('setBoxState', null, ['number', 'number'], [boxes[i].nativeBox, 0]);
+	}
+};
+
+var setColorAlgAllBoxes = function(algId) {
+	for (i in boxes) {
+		Module.ccall('setColorAlg', null, ['number', 'number'], [boxes[i].nativeBox, algId]);
 	}
 };
 
@@ -130,6 +138,17 @@ var setupCanvasClickListener = function() {
 	});
 };
 
+
+$(function(){
+
+$('input[name="color_alg"]:radio').change(
+    function() {
+	setColorAlgAllBoxes(this.value);
+    }
+);
+
+});
+
 </script>
 
 <!-- Our C library (compiled by Emscripten) -->
@@ -140,12 +159,13 @@ var setupCanvasClickListener = function() {
 <body onload="document.getElementById('audio_control').volume = 0.2; setupCanvasClickListener()">
 	<p>Theme:
 	<form action="">
-	<input type="radio" name="COLOR_ALG__PURPLE_CALM" value="COLOR_ALG__PURPLE_CALM" checked="checked">Purple Calm<br>
+	<input type="radio" name="color_alg" value="1" checked="checked">Purple Calm<br>
+	<input type="radio" name="color_alg" value="2">Disco<br>
 	</form>
 	</p>
 
 	<div>
-		<canvas id="main_canvas" width="500" height="400" onclick="canvasClicked()"></canvas>
+		<canvas id="main_canvas" width="500" height="400"></canvas>
 	</div>
 	<div>
 		<button type="button" onclick="resetAllBoxes()">Reset Boxes</button>

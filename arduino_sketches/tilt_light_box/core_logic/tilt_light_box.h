@@ -5,6 +5,7 @@
 #include <limits.h>
 #include "color_phase.h"
 #include "color_alg_purple_calm.h"
+#include "color_alg_disco.h"
 
 // TODO [rkenney]: Remove debug
 // #include <stdio.h>
@@ -13,6 +14,7 @@
 #define COLOR_INCREMENT 4;
 
 #define COLOR_ALG__PURPLE_CALM 1
+#define COLOR_ALG__DISCO 2
 
 #define BOX_STATE__UPRIGHT 0
 #define BOX_STATE__TILTING 1
@@ -30,6 +32,7 @@ typedef struct TILT_BOX {
 	char boxState;
 	int colorAlg;
 	PurpleCalmAlgState purpleCalmAlgState;
+	DiscoAlgState discoAlgState;
 } TiltBox;
 
 /**
