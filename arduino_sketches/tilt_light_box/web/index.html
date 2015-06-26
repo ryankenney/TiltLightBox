@@ -31,8 +31,8 @@ function drawBox(r, g, b, x, y) {
 	context.beginPath();
 	context.moveTo(x, y);
 	context.lineTo(x+70, y);
-	context.lineTo(x+65, y+60);
-	context.lineTo(x+5, y+60);
+	context.lineTo(x+65, y+30);
+	context.lineTo(x+5, y+30);
 	context.closePath();
 	context.fill();
 	// context.stroke();
@@ -46,7 +46,7 @@ var TiltBox = function(nativeBox, x, y) {
 	this.x = x;
 	this.y = y;
 	this.pointIsWithin = function(x, y) {
-		return (x >= this.x && y >= this.y && x < this.x+70 && y < this.y+70);
+		return (x >= this.x && y >= this.y && x < this.x+70 && y < this.y+40);
 	};
 };
 
@@ -102,18 +102,24 @@ var Module = {
 
 		// Create tilt light boxes, each with an internal native component
 		var x = [10, 100, 190, 280, 370];
-		var y = [10, 80, 150];
-		createTiltBox(x[0], y[1], boxes, boxesIndex);
-		createTiltBox(x[0], y[2], boxes, boxesIndex);
-		createTiltBox(x[1], y[2], boxes, boxesIndex);
+		var y = [10, 50, 90, 130, 170, 210, 250, 290, 330, 370];
+		createTiltBox(x[1], y[4], boxes, boxesIndex);	
+		createTiltBox(x[1], y[5], boxes, boxesIndex);
 		createTiltBox(x[2], y[0], boxes, boxesIndex);
+		createTiltBox(x[1], y[7], boxes, boxesIndex);
 		createTiltBox(x[2], y[1], boxes, boxesIndex);
 		createTiltBox(x[2], y[2], boxes, boxesIndex);
+		createTiltBox(x[3], y[0], boxes, boxesIndex);
 		createTiltBox(x[3], y[1], boxes, boxesIndex);
 		createTiltBox(x[3], y[2], boxes, boxesIndex);
+		createTiltBox(x[3], y[4], boxes, boxesIndex);
+		createTiltBox(x[3], y[5], boxes, boxesIndex);
+		createTiltBox(x[3], y[7], boxes, boxesIndex);
 		createTiltBox(x[4], y[0], boxes, boxesIndex);
 		createTiltBox(x[4], y[1], boxes, boxesIndex);
 		createTiltBox(x[4], y[2], boxes, boxesIndex);
+		createTiltBox(x[4], y[4], boxes, boxesIndex);
+		createTiltBox(x[4], y[5], boxes, boxesIndex);
 
 		// Schedule cycle execution of each box. This simulates the CPU cycle of box.
 		for (i in boxes) {
@@ -165,10 +171,10 @@ $('input[name="color_alg"]:radio').change(
 	</p>
 
 	<div>
-		<canvas id="main_canvas" width="500" height="400"></canvas>
+		<button type="button" onclick="resetAllBoxes()">Reset Boxes</button>
 	</div>
 	<div>
-		<button type="button" onclick="resetAllBoxes()">Reset Boxes</button>
+		<canvas id="main_canvas" width="500" height="400"></canvas>
 	</div>
 	<div>
 		<audio id="audio_control" controls loop>
