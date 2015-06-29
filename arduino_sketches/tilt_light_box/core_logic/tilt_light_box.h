@@ -13,6 +13,7 @@
 #define DELAY_MILLIS 10;
 #define COLOR_INCREMENT 4;
 
+#define COLOR_ALG__NOOP 0
 #define COLOR_ALG__PURPLE_CALM 1
 #define COLOR_ALG__DISCO 2
 
