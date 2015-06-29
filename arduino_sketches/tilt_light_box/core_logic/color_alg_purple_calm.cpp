@@ -3,8 +3,8 @@
 // ==== Private =====
 
 ColorPhase color_alg_purple_calm__phasesUpright[] =  {
-	{{164,164,164},{255,0,255},2000},
-	{{255,0,255},{164,164,164},3000},
+	{{164,50,164},{255,0,255},2000},
+	{{255,0,255},{164,50,164},3000},
 };
 
 ColorPhase color_alg_purple_calm__phasesTilting[] =  {
@@ -14,8 +14,8 @@ ColorPhase color_alg_purple_calm__phasesTilting[] =  {
 };
 
 ColorPhase color_alg_purple_calm__phasesTilted[] =  {
-	{{64,164,64},{64,255,64},1000},
-	{{64,255,64},{64,164,64},1000},
+	{{0,127,64},{0,255,0},1000},
+	{{0,255,0},{0,127,0},1000},
 };
 
 ColorPhase* color_alg_purple_calm__phases[] = {
