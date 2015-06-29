@@ -17,9 +17,9 @@
 #define COLOR_ALG__PURPLE_CALM 1
 #define COLOR_ALG__DISCO 2
 
-#define BOX_STATE__UPRIGHT 0
-#define BOX_STATE__TILTING 1
-#define BOX_STATE__TILTED 2
+#define BOX_STATE__UPRIGHT 100
+#define BOX_STATE__TILTING 101
+#define BOX_STATE__TILTED 102
 
 #ifdef __cplusplus
 extern "C" {

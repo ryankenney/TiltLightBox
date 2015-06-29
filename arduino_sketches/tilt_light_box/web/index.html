@@ -15,8 +15,13 @@ var DELAY_MILLIS = 10;
 var boxes = [];
 var boxesIndex = [];
 
+var COLOR_ALG__NOOP = 0;
 var COLOR_ALG__PURPLE_CALM = 1;
 var COLOR_ALG__DISCO = 2;
+
+var BOX_STATE__UPRIGHT = 100;
+var BOX_STATE__TILTING = 101;
+var BOX_STATE__TILTED = 102;
 
 /**
  * Draws a colored box on the canvas, with the specified color,
@@ -72,7 +77,7 @@ var cycleBox = function(box) {
 
 var resetAllBoxes = function() {
 	for (i in boxes) {
-		Module.ccall('setBoxState', null, ['number', 'number'], [boxes[i].nativeBox, 0]);
+		Module.ccall('setBoxState', null, ['number', 'number'], [boxes[i].nativeBox, BOX_STATE__UPRIGHT]);
 	}
 };
 
@@ -93,8 +98,6 @@ var Module = {
 			return new Date().getTime();
 		});
 		var writeColorFunc = Runtime.addFunction(function(nativeBox,r,g,b) {
-			// TODO [rkenney]: Remove debug
-			// console.log("RGB: "+r+','+g+','+b);
 			var box = boxesIndex[nativeBox];
 			drawBox(r, g, b, box.x, box.y);
 		});
@@ -138,7 +141,7 @@ var setupCanvasClickListener = function() {
 		
 		for (var i in boxes) {
 			if (boxes[i].pointIsWithin(x, y)) {
-				Module.ccall('setBoxState', null, ['number', 'number'], [boxes[i].nativeBox, 1]);
+				Module.ccall('setBoxState', null, ['number', 'number'], [boxes[i].nativeBox, BOX_STATE__TILTING]);
 			}
 		}
 	});

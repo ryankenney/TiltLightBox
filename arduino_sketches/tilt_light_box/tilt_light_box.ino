@@ -45,8 +45,6 @@ void setup() {
   setRandomValueFunc(myRandomValueFunc);
   setCurrentMillisFunc(myCurrentMillisFunc);
   box = createTiltBox();
-  setBoxState(box, 0);
-  setColorAlg(box, COLOR_ALG__PURPLE_CALM);
 }
 
 boolean wasTilted = false;
@@ -72,7 +70,17 @@ void loop() {
     newlyTilting = true;
   }
 
-  // Apply change in tilt state to color algorithm
+  // Notify master of tilting via RF
+  if (newlyTilting) {
+    radio.stopListening();
+    // TODO [rkenney]: Remove debug (oversized array)
+    uint8_t rx_data[4] = {BOX_STATE__TILTING,BOX_STATE__TILTING,BOX_STATE__TILTING,BOX_STATE__TILTING};
+    radio.write( &rx_data, sizeof(rx_data) );
+    Serial.println("Sent tilt.");
+    radio.startListening();
+  }
+
+  // Apply any change in tilt state to color algorithm
   if (newlyTilting) {
     setBoxState(box, BOX_STATE__TILTING);
   } else if (isTilted & !wasTilted) {
@@ -108,7 +116,8 @@ void loop() {
 
 uint8_t readThemeChangeFromRF() {
   // Read theme request from RF
-  uint8_t rx_data[3] = {COLOR_ALG__NOOP};
+  // TODO [rkenney]: Remove debug (oversized array)
+  uint8_t rx_data[4] = {COLOR_ALG__NOOP, COLOR_ALG__NOOP, COLOR_ALG__NOOP, COLOR_ALG__NOOP};
   if (radio.available()) {
     boolean done;
     while (!done) {
@@ -125,10 +134,8 @@ uint8_t readThemeChangeFromRF() {
     radio.startListening();
   } else {
     // TODO [rkenney]: Remove debug
-    /*
     Serial.print("No messages.\n");
     delay(1000);
-    */
   }
   return rx_data[0];
 }

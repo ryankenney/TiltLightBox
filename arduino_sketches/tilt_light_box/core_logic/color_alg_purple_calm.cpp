@@ -37,6 +37,7 @@ void color_alg_purple_calm__init(PurpleCalmAlgState *state) {
 }
 
 bool color_alg_purple_calm__getColor(PurpleCalmAlgState *state, char boxState, unsigned char * result) {
-	return color_phase__getColor(state->cycleStartTime, color_alg_purple_calm__phases[boxState], color_alg_purple_calm__phaseCounts[boxState], result);
+	char stateIndex = boxState-BOX_STATE__UPRIGHT;
+	return color_phase__getColor(state->cycleStartTime, color_alg_purple_calm__phases[stateIndex], color_alg_purple_calm__phaseCounts[stateIndex], result);
 }
 

@@ -44,6 +44,7 @@ void color_alg_disco__init(DiscoAlgState *state) {
 }
 
 bool color_alg_disco__getColor(DiscoAlgState *state, char boxState, unsigned char * result) {
-	return color_phase__getColor(state->cycleStartTime, color_alg_disco__phases[boxState], color_alg_disco__phaseCounts[boxState], result);
+	char stateIndex = boxState-BOX_STATE__UPRIGHT;
+	return color_phase__getColor(state->cycleStartTime, color_alg_disco__phases[stateIndex], color_alg_disco__phaseCounts[stateIndex], result);
 }
 

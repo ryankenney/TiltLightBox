@@ -17,7 +17,8 @@ typedef struct TILT_LIGHT_BOX_PRIV {
 
 TiltLightBoxPriv tilt_light_box_private;
 
-void tilt_light_box_initColorAlg(TiltBox *box) {	switch (box->colorAlg) {
+void tilt_light_box_initColorAlg(TiltBox *box) {
+	switch (box->colorAlg) {
 	case COLOR_ALG__PURPLE_CALM:
 		color_alg_purple_calm__init(&box->purpleCalmAlgState);
 		break;
@@ -72,10 +73,8 @@ void sleepMillis(unsigned long millis) {
 
 TiltBox* createTiltBox() {
 	TiltBox* ptr = (TiltBox*) malloc(sizeof(TiltBox));
-
-	// TODO [rkenney]: Remove debug
-	// printf("RGB: %d,%d,%d\n", ptr->startColor[0], ptr->startColor[1], ptr->startColor[2]);
-
+	setColorAlg(ptr, COLOR_ALG__PURPLE_CALM);
+	setBoxState(ptr, BOX_STATE__UPRIGHT);
 	return ptr;
 }
 
