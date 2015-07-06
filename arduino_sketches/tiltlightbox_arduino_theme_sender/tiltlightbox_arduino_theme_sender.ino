@@ -9,6 +9,7 @@
 RF24 radio(RF_CS, RF_CSN);
 const uint64_t pipes[2] = { 0xe7e7e7e7e7LL, 0xc2c2c2c2c2LL };
 boolean buttonPinWasActive = false;
+unsigned long lastSendMillis = 0;
 
 void setup() {
   Serial.begin(9600);
@@ -19,6 +20,8 @@ void setup() {
   radio.printDetails();
 
   pinMode(BUTTON_PIN, INPUT_PULLUP);
+  
+  attachInterrupt(0, checkRadio, FALLING);
 }
 
 void loop() {
@@ -39,6 +42,7 @@ void loop() {
     // transmit the data
     radio.stopListening();
     radio.write( &tx_data, sizeof(tx_data) );
+    lastSendMillis = micros();
     radio.startListening();
   }
   buttonPinWasActive = buttonPinActive;
@@ -51,3 +55,31 @@ boolean pinIsActive(int pinNumber) {
   return (LOW == pinValue);
 }
 
+void checkRadio(void)
+{
+  // What happened?
+  bool tx,fail,rx;
+  radio.whatHappened(tx,fail,rx);
+
+  if ( tx )
+  {
+     Serial.print("Send:OK\n");
+  }
+
+  if ( fail )
+  {
+     Serial.print("Send:Failed\n");
+  }
+
+  if ( rx )
+  {
+    uint8_t tx_data[1];
+    radio.read(&tx_data,sizeof(tx_data));
+    unsigned long duration = micros() - lastSendMillis;
+    Serial.print("Ack:");
+    Serial.print(tx_data[0]);
+    Serial.print(" (");
+    Serial.print(duration);
+    Serial.print("ms)\n");
+  }
+}
