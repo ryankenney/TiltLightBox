@@ -74,7 +74,7 @@ void loop() {
   if (newlyTilting) {
     radio.stopListening();
     // TODO [rkenney]: Remove debug (oversized array)
-    uint8_t rx_data[4] = {BOX_STATE__TILTING,BOX_STATE__TILTING,BOX_STATE__TILTING,BOX_STATE__TILTING};
+    uint8_t rx_data[1] = {BOX_STATE__TILTING};
     radio.write( &rx_data, sizeof(rx_data) );
     Serial.println("Sent tilt.");
     radio.startListening();
@@ -111,13 +111,12 @@ void loop() {
   Serial.print("\n");
   delay(1000);
   */
-
 }
 
 uint8_t readThemeChangeFromRF() {
   // Read theme request from RF
   // TODO [rkenney]: Remove debug (oversized array)
-  uint8_t rx_data[4] = {COLOR_ALG__NOOP, COLOR_ALG__NOOP, COLOR_ALG__NOOP, COLOR_ALG__NOOP};
+  uint8_t rx_data[4] = {COLOR_ALG__NOOP};
   if (radio.available()) {
     boolean done;
     while (!done) {
@@ -132,10 +131,6 @@ uint8_t readThemeChangeFromRF() {
     radio.write( &rx_data, sizeof(rx_data) );
     Serial.println("Sent response.");
     radio.startListening();
-  } else {
-    // TODO [rkenney]: Remove debug
-    Serial.print("No messages.\n");
-    delay(1000);
   }
   return rx_data[0];
 }
