@@ -116,7 +116,7 @@ void loop() {
 uint8_t readThemeChangeFromRF() {
   // Read theme request from RF
   // TODO [rkenney]: Remove debug (oversized array)
-  uint8_t rx_data[4] = {COLOR_ALG__NOOP};
+  uint8_t rx_data[1] = {COLOR_ALG__NOOP};
   if (radio.available()) {
     boolean done;
     while (!done) {
