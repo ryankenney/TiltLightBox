@@ -1,6 +1,9 @@
-#include <SPI.h>
-#include <RF24.h>
+#include <stdio.h>
 #include <stdlib.h>
+#include <SPI.h>
+#include <printf.h>
+#include <RF24.h>
+#include <nRF24L01.h>
 #include <tilt_light_box.h>
 
 const int axisPinN = A1;
@@ -35,8 +38,10 @@ void setup() {
 
   // Initialize RF library
   radio.begin();
-  radio.openWritingPipe(pipes[1]);
-  radio.openReadingPipe(1, pipes[0]);
+  radio.enableDynamicPayloads();
+  radio.openWritingPipe(pipes[0]);
+  radio.openReadingPipe(1, pipes[1]);
+  radio.setRetries(15,15);
   radio.startListening();
   radio.printDetails();
 
@@ -50,7 +55,6 @@ void setup() {
 boolean wasTilted = false;
 
 void loop() {  
-
   // Read theme request from RF
   uint8_t newTheme = readThemeChangeFromRF();
 
@@ -119,8 +123,8 @@ uint8_t readThemeChangeFromRF() {
   uint8_t rx_data[1] = {COLOR_ALG__NOOP};
   if (radio.available()) {
     boolean done;
-    while (!done) {
-      done = radio.read( &rx_data, sizeof(rx_data) );
+    while (radio.available()) {
+      radio.read( &rx_data, sizeof(rx_data) );
       // TODO [rkenney]: Remove debug
       Serial.print("Recieved theme change: ");
       Serial.print(rx_data[0]);

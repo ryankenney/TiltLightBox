@@ -1,3 +1,9 @@
+#include <LiquidCrystal.h>
+
+#include <nRF24L01.h>
+#include <RF24.h>
+#include <RF24_config.h>
+
 // RF Sender
 
 #include <SPI.h>
@@ -115,9 +121,11 @@ void loop() {
   // listen for acknowledgement from the receiver
   unsigned long started_waiting_at = millis();
   bool timeout = false;
-  while (!radio.available() && ! timeout)
-    if (millis() - started_waiting_at > 250 )
+  while (!radio.available() && ! timeout) {
+    if (millis() - started_waiting_at > 250 ) {
       timeout = true;
+    }
+  }
  
   if (timeout){
     Serial.println("Failed, response timed out.");
