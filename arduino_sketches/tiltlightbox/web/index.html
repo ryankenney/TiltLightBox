@@ -14,6 +14,7 @@ var DELAY_MILLIS = 10;
 
 var boxes = [];
 var boxesIndex = [];
+var tiltMessages = [];
 
 var COLOR_ALG__NOOP = 0;
 var COLOR_ALG__PURPLE_CALM = 1;
@@ -22,6 +23,7 @@ var COLOR_ALG__DISCO = 2;
 var BOX_STATE__UPRIGHT = 100;
 var BOX_STATE__TILTING = 101;
 var BOX_STATE__TILTED = 102;
+
 
 /**
  * Draws a colored box on the canvas, with the specified color,
@@ -53,6 +55,10 @@ var TiltBox = function(nativeBox, x, y) {
 	this.pointIsWithin = function(x, y) {
 		return (x >= this.x && y >= this.y && x < this.x+70 && y < this.y+40);
 	};
+	this.mockHardware = {
+		tiltSensorIsActive: false,
+		inboundMessages: []
+	}
 };
 
 /**
@@ -97,11 +103,43 @@ var Module = {
 		var millisFunc = Runtime.addFunction(function() {
 			return new Date().getTime();
 		});
-		var writeColorFunc = Runtime.addFunction(function(nativeBox,r,g,b) {
+// TODO [rkenney]: Remove old
+		/* var writeColorFunc = Runtime.addFunction(function(nativeBox,r,g,b) {
+			var box = boxesIndex[nativeBox];
+			drawBox(r, g, b, box.x, box.y);
+		}); */
+		var transmitTiltState = Runtime.addFunction(function(nativeBox, state) {
+			var box = boxesIndex[nativeBox];
+			tiltMessages.push({box:box, state:state});
+		});
+		var receiveThemeChange = Runtime.addFunction(function(nativeBox) {
+			var hw = boxesIndex[nativeBox].mockHardware;
+			if (hw.inboundMessages.length < 1) {
+				return COLOR_ALG__NOOP;
+			} else {
+				// Skip to most recent message
+				var theme = hw.inboundMessages[hw.inboundMessages.length-1];
+				hw.inboundMessages = [];
+				return theme;
+			}
+		});
+		var tiltSensorIsActive = Runtime.addFunction(function(nativeBox) {
+			var box = boxesIndex[nativeBox];
+			return box.mockHardware.tiltSensorIsActive;
+		});
+		var writeVisibleColor = Runtime.addFunction(function(nativeBox,r,g,b) {
 			var box = boxesIndex[nativeBox];
 			drawBox(r, g, b, box.x, box.y);
 		});
-		Module.callMain([millisFunc.toString(),writeColorFunc.toString()]);
+
+		Module.callMain([
+			millisFunc.toString(),
+// TODO [rkenney]: Remove old
+			//writeColorFunc.toString(),
+			transmitTiltState.toString(),
+			receiveThemeChange.toString(),
+			tiltSensorIsActive.toString(),
+			writeVisibleColor.toString()]);
 
 		// Create tilt light boxes, each with an internal native component
 		var x = [10, 100, 190, 280, 370];

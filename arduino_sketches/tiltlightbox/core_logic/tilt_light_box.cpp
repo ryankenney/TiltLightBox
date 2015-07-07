@@ -1,7 +1,7 @@
 #include "tilt_light_box.h"
 
 // TODO [rkenney]: Remove debug
-//#include <stdio.h>
+#include <stdio.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -13,6 +13,10 @@ typedef struct TILT_LIGHT_BOX_PRIV {
 	unsigned long (*millis)();
 	int (*random)(int, int);
 	void (*sleepMillis)(unsigned long);
+	void (*transmitTiltState)(TiltBox *box, unsigned char boxState);
+	unsigned char (*receiveThemeChange)(TiltBox *box);
+	bool (*tiltSensorIsActive)(TiltBox *box);
+	void (*writeVisibleColor)(TiltBox *box, unsigned char r, unsigned char g, unsigned char b);
 } TiltLightBoxPriv;
 
 TiltLightBoxPriv tilt_light_box_private;
@@ -71,6 +75,42 @@ void sleepMillis(unsigned long millis) {
 	tilt_light_box_private.sleepMillis(millis);
 }
 
+void transmitTiltState(TiltBox *box, unsigned char state) {
+	tilt_light_box_private.transmitTiltState(box, state);
+}
+
+void setTransmitTiltStateFunc(void (*func)(TiltBox *box, unsigned char boxState)) {
+	tilt_light_box_private.transmitTiltState = func;
+}
+
+unsigned char receiveThemeChange(TiltBox *box) {
+	return tilt_light_box_private.receiveThemeChange(box);
+}
+
+void setReceiveThemeChangeFunc(unsigned char (*func)(TiltBox *box)) {
+	tilt_light_box_private.receiveThemeChange = func;
+}
+
+bool tiltSensorIsActive(TiltBox *box) {
+	return tilt_light_box_private.tiltSensorIsActive(box);
+}
+
+void setTileSensorIsActiveFunc(bool (*func)(TiltBox *box)) {
+	tilt_light_box_private.tiltSensorIsActive = func;
+}
+
+void writeVisibleColor(TiltBox *box, unsigned char r, unsigned char g, unsigned char b) {
+	// TODO [rkenney]: Remove debug
+	//printf("%d:%d:%d\n", (int)r,(int)g,(int)b);
+
+	tilt_light_box_private.writeVisibleColor(box, r, g, b);
+}
+
+void setWriteVisibleColorFunc(void (*func)(TiltBox *box, unsigned char r, unsigned char g, unsigned char b)) {
+	tilt_light_box_private.writeVisibleColor = func;
+}
+
+
 TiltBox* createTiltBox() {
 	TiltBox* ptr = (TiltBox*) malloc(sizeof(TiltBox));
 	setColorAlg(ptr, COLOR_ALG__PURPLE_CALM);
@@ -83,7 +123,7 @@ void setColorAlg(TiltBox *box, int algId) {
 	tilt_light_box_initColorAlg(box);
 }
 
-void setBoxState(TiltBox *box, char boxState) {
+void setBoxState(TiltBox *box, unsigned char boxState) {
 	box->boxState = boxState;
 	tilt_light_box_initColorAlg(box);
 }
@@ -103,6 +143,58 @@ void getColor(TiltBox *box, unsigned char *result) {
 	}
 	// Re-get color
 	tilt_light_box_getColorFromAlg(box, result);
+}
+
+void runCycle(TiltBox *box) {
+	// Read theme request from RF
+	unsigned char newTheme = receiveThemeChange(box);
+
+	// Apply any theme request
+	if (newTheme != COLOR_ALG__NOOP) {
+		setColorAlg(box, newTheme);
+	}
+
+	// Read tilt sensor
+	bool newlyTilting = false;
+	bool isTilted = tiltSensorIsActive(box);
+	if (isTilted & !box->wasTilted) {
+		newlyTilting = true;
+	}
+
+	// Notify master of tilting via RF
+	if (newlyTilting) {
+		transmitTiltState(box, BOX_STATE__TILTING);
+	}
+
+	// Apply any change in tilt state to color algorithm
+	if (newlyTilting) {
+		setBoxState(box, BOX_STATE__TILTING);
+	} else if (isTilted & !box->wasTilted) {
+		// Do nothing. The lib rolls the color alg from __TILTING to __TILTED automatically
+		// setColorAlg(box, BOX_STATE__TILTED);
+	} else if (!isTilted & box->wasTilted) {
+		setBoxState(box, BOX_STATE__UPRIGHT);
+	}
+	box->wasTilted = isTilted;
+
+	// Read next color
+	unsigned char color[3] = {0,0,0};
+	getColor(box, color);
+
+	// Write new color
+	writeVisibleColor(box, color[0], color[1], color[2]);
+
+	// Print debug
+	/*
+	Serial.print("RGB - ");
+	Serial.print(color[0]);
+	Serial.print(":");
+	Serial.print(color[1]);
+	Serial.print(":");
+	Serial.print(color[2]);
+	Serial.print("\n");
+	delay(1000);
+	*/
 }
 
 

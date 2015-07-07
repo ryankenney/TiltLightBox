@@ -30,10 +30,14 @@ typedef struct TILT_BOX {
 	unsigned char endColor[3];
 	unsigned long transitionStartTime;
 	unsigned long transitionDuration;
-	char boxState;
+	unsigned char boxState;
 	int colorAlg;
 	PurpleCalmAlgState purpleCalmAlgState;
 	DiscoAlgState discoAlgState;
+	/**
+	 * Whether the box was tilted last cycle
+	 */
+	bool wasTilted;
 } TiltBox;
 
 /**
@@ -74,6 +78,47 @@ void sleepMillis(unsigned long millis);
 void setSleepMillisFunc(void (*func)(unsigned long));
 
 /**
+ * Transmits an updated tilt state back to the central server
+ */
+void transmitTiltState(TiltBox *box, unsigned char state);
+
+/**
+ * Sets the implementation of transmitTiltState()
+ */
+void setTransmitTiltStateFunc(void (*func)(TiltBox *box, unsigned char boxState));
+
+/**
+ * Reads any theme change request from the central server.
+ * Returns COLOR_ALG__NOOP if nothing was read (trasmitted).
+ */
+unsigned char receiveThemeChange(TiltBox *box);
+
+/**
+ * Sets the implementation of receiveThemeChange()
+ */
+void setReceiveThemeChangeFunc(unsigned char (*func)(TiltBox *box));
+
+/**
+ * Writes the specified color to the local LEDs
+ */
+void writeVisibleColor(TiltBox *box, unsigned char r, unsigned char g, unsigned char b);
+
+/**
+ * Sets the implementation of writeVisibleColor()
+ */
+void setWriteVisibleColorFunc(void (*func)(TiltBox *box, unsigned char r, unsigned char g, unsigned char b));
+
+/**
+ * Returns true iff the box is tilted in one or more directions
+ */
+bool tiltSensorIsActive(TiltBox *box);
+
+/**
+ * Sets the implementation of tiltSensorActive()
+ */
+void setTileSensorIsActiveFunc(bool (*func)(TiltBox *box));
+
+/**
  * Mollocs and initializes a tilt light box object
  */
 TiltBox * createTiltBox();
@@ -88,7 +133,13 @@ void setColorAlg(TiltBox *box, int algId);
  * Note that the box will automatically transition from BOX_STATE__TILTING
  * to BOX_STATE__TILTED when the former animation ends.
  */
-void setBoxState(TiltBox *box, char boxState);
+void setBoxState(TiltBox *box, unsigned char boxState);
+
+
+/**
+ * Runs one cycle of the pimary logic
+ */
+void runCycle(TiltBox *box);
 
 #ifdef __cplusplus
 }
