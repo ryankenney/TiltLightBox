@@ -1,8 +1,8 @@
 // Color Demo
 
-const int ledPinRed = 9;
-const int ledPinGreen = 10;
-const int ledPinBlue = 11;
+const int ledPinRed = 5;
+const int ledPinGreen = 6;
+const int ledPinBlue = 3;
 
 void setup() {
 
