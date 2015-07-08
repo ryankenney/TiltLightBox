@@ -44,9 +44,18 @@ bool tilt_light_box_getColorFromAlg(TiltBox *box, unsigned char *result) {
 	case COLOR_ALG__DISCO:
 		return color_alg_disco__getColor(&box->discoAlgState, box->boxState, result);
 	default:
-		// TODO [rkenney]: Throw an exception?
 		return false;
 	}
+}
+
+void setBoxState(TiltBox *box, unsigned char boxState) {
+	box->boxState = boxState;
+	tilt_light_box_initColorAlg(box);
+}
+
+void setColorAlg(TiltBox *box, int algId) {
+	box->colorAlg = algId;
+	tilt_light_box_initColorAlg(box);
 }
 
 // ==== Public =====
@@ -100,9 +109,6 @@ void setTileSensorIsActiveFunc(bool (*func)(TiltBox *box)) {
 }
 
 void writeVisibleColor(TiltBox *box, unsigned char r, unsigned char g, unsigned char b) {
-	// TODO [rkenney]: Remove debug
-	//printf("%d:%d:%d\n", (int)r,(int)g,(int)b);
-
 	tilt_light_box_private.writeVisibleColor(box, r, g, b);
 }
 
@@ -116,16 +122,6 @@ TiltBox* createTiltBox() {
 	setColorAlg(ptr, COLOR_ALG__PURPLE_CALM);
 	setBoxState(ptr, BOX_STATE__UPRIGHT);
 	return ptr;
-}
-
-void setColorAlg(TiltBox *box, int algId) {
-	box->colorAlg = algId;
-	tilt_light_box_initColorAlg(box);
-}
-
-void setBoxState(TiltBox *box, unsigned char boxState) {
-	box->boxState = boxState;
-	tilt_light_box_initColorAlg(box);
 }
 
 void getColor(TiltBox *box, unsigned char *result) {

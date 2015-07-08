@@ -45,7 +45,7 @@ emcc \
 	core_logic/color_alg_disco.cpp \
 	js_adaptor/tilt_light_box_jsapi.cpp \
 	-o web/tilt_light_box.js \
-	-s EXPORTED_FUNCTIONS="['_main','_createTiltBox','_runCycle','_setColorAlg','_setBoxState']" \
+	-s EXPORTED_FUNCTIONS="['_main','_createTiltBox','_runCycle']" \
 	-s RESERVED_FUNCTION_POINTERS=5 \
 	-s NO_EXIT_RUNTIME=1 \
 	-s ASSERTIONS=2

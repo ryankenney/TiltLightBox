@@ -70,8 +70,6 @@ var createTiltBox = function(x, y, list, index) {
 	var box = new TiltBox(nativeBox, x, y);
 	list.push(box);
 	index[nativeBox] = box;
-	// Set a default color alg
-	Module.ccall('setColorAlg', null, ['number', 'number'], [nativeBox, COLOR_ALG__PURPLE_CALM]);
 }
 
 /**
@@ -83,13 +81,13 @@ var cycleBox = function(box) {
 
 var resetAllBoxes = function() {
 	for (i in boxes) {
-		Module.ccall('setBoxState', null, ['number', 'number'], [boxes[i].nativeBox, BOX_STATE__UPRIGHT]);
+		boxes[i].mockHardware.tiltSensorIsActive = false;
 	}
 };
 
 var setColorAlgAllBoxes = function(algId) {
 	for (i in boxes) {
-		Module.ccall('setColorAlg', null, ['number', 'number'], [boxes[i].nativeBox, algId]);
+		boxes[i].mockHardware.inboundMessages.push(algId);
 	}
 };
 
@@ -179,7 +177,7 @@ var setupCanvasClickListener = function() {
 		
 		for (var i in boxes) {
 			if (boxes[i].pointIsWithin(x, y)) {
-				Module.ccall('setBoxState', null, ['number', 'number'], [boxes[i].nativeBox, BOX_STATE__TILTING]);
+				boxes[i].mockHardware.tiltSensorIsActive = !boxes[i].mockHardware.tiltSensorIsActive;
 			}
 		}
 	});

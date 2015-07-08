@@ -124,19 +124,6 @@ void setTileSensorIsActiveFunc(bool (*func)(TiltBox *box));
 TiltBox * createTiltBox();
 
 /**
- * Sets the color algorithm to use for the box
- */
-void setColorAlg(TiltBox *box, int algId);
-
-/**
- * Sets the current state of the box. Box state is one of the BOX_STATE__ constants.
- * Note that the box will automatically transition from BOX_STATE__TILTING
- * to BOX_STATE__TILTED when the former animation ends.
- */
-void setBoxState(TiltBox *box, unsigned char boxState);
-
-
-/**
  * Runs one cycle of the pimary logic
  */
 void runCycle(TiltBox *box);
