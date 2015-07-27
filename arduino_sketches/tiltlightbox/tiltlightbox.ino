@@ -3,7 +3,6 @@
 #include <SPI.h>
 #include <printf.h>
 #include <RF24.h>
-#include <nRF24L01.h>
 #include <tilt_light_box.h>
 
 const int axisPinN = A1;
@@ -152,14 +151,6 @@ bool myTiltSensorIsActiveFunc(TiltBox *box) {
     pinIsActive(axisPinS) || 
     pinIsActive(axisPinE) || 
     pinIsActive(axisPinW);
-  
-  // TODO [rkenney]: Remove debug
-  if (isActive) {
-    Serial.println("Tilted");
-  } else {
-    Serial.println("Upright");
-  }
-  
   return isActive;
 }
 

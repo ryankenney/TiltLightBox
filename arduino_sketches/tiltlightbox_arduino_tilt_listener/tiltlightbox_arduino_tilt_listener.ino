@@ -16,15 +16,13 @@ void setup() {
 }
 
 void loop() {
-  if (radio.available()) {
+  while (radio.available()) {
     uint8_t rx_data[1];
-    while (radio.available()) {
-      radio.read( &rx_data, sizeof(rx_data) );
+    radio.read( &rx_data, sizeof(rx_data) );
 
-      Serial.print("Recieved tilt message: ");
-      Serial.print(rx_data[0]);
-      Serial.print("\n");
-    }
+    Serial.print("Recieved tilt message: ");
+    Serial.print(rx_data[0]);
+    Serial.print("\n");
   }
 }
 
