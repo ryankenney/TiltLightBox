@@ -4,14 +4,14 @@
 #include <printf.h>
 #include <RF24.h>
 #include <tilt_light_box.h>
+#include "FastLED.h"
 
+#define NUM_LEDS 48
+CRGB leds[NUM_LEDS];
 const int axisPinN = A1;
 const int axisPinS = A2;
 const int axisPinE = 8;
 const int axisPinW = 7;
-const int ledPinRed = 5;
-const int ledPinGreen = 6;
-const int ledPinBlue = 3;
 const uint64_t pipes[2] = { 0xe7e7e7e7e7LL, 0xc2c2c2c2c2LL };
 TiltBox* box;
 const int RF_CE = 9;
@@ -38,9 +38,6 @@ void setup() {
   pinMode(axisPinS, INPUT_PULLUP);
   pinMode(axisPinE, INPUT_PULLUP);
   pinMode(axisPinW, INPUT_PULLUP);
-  pinMode(ledPinRed, OUTPUT);
-  pinMode(ledPinGreen, OUTPUT);
-  pinMode(ledPinBlue, OUTPUT);
 
   // Initialize RF library
   initRadio();
@@ -69,10 +66,12 @@ void initRadio() {
   radio.setCRCLength(RF24_CRC_16);
   radio.setRetries(15,15);
   
-  //radio.enableDynamicPayloads();
+  radio.enableDynamicPayloads();
   radio.openWritingPipe(pipes[0]);
   radio.openReadingPipe(1, pipes[1]);
   radio.startListening();
+
+  FastLED.addLeds<LPD8806, 5, 6, BRG>(leds, NUM_LEDS); 
 
   // This was blocking execution on my Uno for some reason
   //radio.printDetails();
@@ -81,9 +80,14 @@ void initRadio() {
 uint8_t readThemeChangeFromRF() {
   // Read theme request from RF
   uint8_t rx_data[1] = {COLOR_ALG__NOOP};
+  uint8_t len = 0;
   if (radio.available()) {
     boolean done;
     while (radio.available()) {
+      len = radio.getDynamicPayloadSize();
+      if (!len) {
+        break;
+      }
       radio.read( &rx_data, sizeof(rx_data) );
       // TODO [rkenney]: Remove debug
       Serial.print("Recieved theme change: ");
@@ -122,14 +126,15 @@ void myTransmitTiltStateFunc(TiltBox *box, unsigned char boxState) {
 unsigned char myReceiveThemeChangeFunc(TiltBox *box)  {
   // Read theme request from RF
   uint8_t rx_data[1] = {COLOR_ALG__NOOP};
-  if (radio.available()) {
-    boolean done;
-    while (radio.available()) {
-      radio.read( &rx_data, sizeof(rx_data) );
-      Serial.print("Recieved theme change: ");
-      Serial.print(rx_data[0]);
-      Serial.print("\n");
+  while (radio.available()) {
+    int len = radio.getDynamicPayloadSize();
+    if (len < 1) {
+      break;
     }
+    radio.read( &rx_data, sizeof(rx_data) );
+    Serial.print("Recieved theme change: ");
+    Serial.print(rx_data[0]);
+    Serial.print("\n");
     // Send ACK
     radio.stopListening();
     radio.write( &rx_data, sizeof(rx_data) );
@@ -140,9 +145,11 @@ unsigned char myReceiveThemeChangeFunc(TiltBox *box)  {
 }
 
 void myWriteVisibleColorFunc(TiltBox *box, unsigned char r, unsigned char g, unsigned char b) {
-  analogWrite(ledPinRed, r);
-  analogWrite(ledPinGreen, g);
-  analogWrite(ledPinBlue, b);
+  int i;
+  for (i=0; i<NUM_LEDS; i++) {
+    leds[i] = CRGB(r,g,b);
+  }
+  FastLED.show();
 }
 
 bool myTiltSensorIsActiveFunc(TiltBox *box) {
