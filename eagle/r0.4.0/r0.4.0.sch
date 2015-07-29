@@ -1280,7 +1280,7 @@ Types:&lt;p&gt;
 <part name="RF_HEADER" library="rf-header" deviceset="PINHD-2X4" device="" value="value?"/>
 <part name="RF_HEADER1" library="rf-header" deviceset="PINHD-2X4" device="" value="value?"/>
 <part name="12VDC_AND_LED" library="con-wago" deviceset="234-206" device="" value="value?"/>
-<part name="JP1" library="pinhead" deviceset="PINHD-2X2" device=""/>
+<part name="USB" library="pinhead" deviceset="PINHD-2X2" device="" value="value?"/>
 </parts>
 <sheets>
 <sheet>
@@ -1294,7 +1294,7 @@ Types:&lt;p&gt;
 <instance part="RF_HEADER" gate="A" x="99.06" y="0"/>
 <instance part="RF_HEADER1" gate="A" x="5.08" y="17.78"/>
 <instance part="12VDC_AND_LED" gate="G$1" x="-76.2" y="-15.24" rot="R180"/>
-<instance part="JP1" gate="A" x="-66.04" y="-33.02"/>
+<instance part="USB" gate="A" x="-20.32" y="-33.02"/>
 </instances>
 <busses>
 </busses>
@@ -1320,12 +1320,13 @@ Types:&lt;p&gt;
 <wire x1="33.02" y1="-17.78" x2="33.02" y2="73.66" width="0.1524" layer="91"/>
 <junction x="-43.18" y="-17.78"/>
 <pinref part="12VDC_AND_LED" gate="G$1" pin="B-2"/>
-<wire x1="-43.18" y1="-17.78" x2="-68.58" y2="-17.78" width="0.1524" layer="91"/>
 <pinref part="12VDC_AND_LED" gate="G$1" pin="B-3"/>
+<wire x1="-43.18" y1="-17.78" x2="-68.58" y2="-17.78" width="0.1524" layer="91"/>
 <wire x1="-68.58" y1="-15.24" x2="-43.18" y2="-15.24" width="0.1524" layer="91"/>
-<pinref part="JP1" gate="A" pin="4"/>
-<wire x1="-63.5" y1="-33.02" x2="-43.18" y2="-33.02" width="0.1524" layer="91"/>
-<wire x1="-43.18" y1="-33.02" x2="-43.18" y2="-17.78" width="0.1524" layer="91"/>
+<junction x="-43.18" y="-17.78"/>
+<wire x1="-43.18" y1="-17.78" x2="-43.18" y2="-33.02" width="0.1524" layer="91"/>
+<pinref part="USB" gate="A" pin="3"/>
+<wire x1="-43.18" y1="-33.02" x2="-25.4" y2="-33.02" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$15" class="0">
@@ -1436,44 +1437,6 @@ Types:&lt;p&gt;
 <junction x="45.72" y="71.12"/>
 </segment>
 </net>
-<net name="N$11" class="0">
-<segment>
-<pinref part="RF_HEADER1" gate="A" pin="1"/>
-<wire x1="2.54" y1="22.86" x2="-5.08" y2="22.86" width="0.1524" layer="91"/>
-<wire x1="-5.08" y1="22.86" x2="-5.08" y2="20.32" width="0.1524" layer="91"/>
-<pinref part="RF_HEADER1" gate="A" pin="7"/>
-<wire x1="-5.08" y1="20.32" x2="-5.08" y2="17.78" width="0.1524" layer="91"/>
-<wire x1="-5.08" y1="17.78" x2="-5.08" y2="15.24" width="0.1524" layer="91"/>
-<wire x1="-5.08" y1="15.24" x2="2.54" y2="15.24" width="0.1524" layer="91"/>
-<pinref part="RF_HEADER1" gate="A" pin="3"/>
-<wire x1="2.54" y1="20.32" x2="-5.08" y2="20.32" width="0.1524" layer="91"/>
-<junction x="-5.08" y="20.32"/>
-<pinref part="RF_HEADER1" gate="A" pin="5"/>
-<wire x1="2.54" y1="17.78" x2="-5.08" y2="17.78" width="0.1524" layer="91"/>
-<junction x="-5.08" y="17.78"/>
-<wire x1="-33.02" y1="66.04" x2="-33.02" y2="22.86" width="0.1524" layer="91"/>
-<wire x1="-33.02" y1="22.86" x2="-33.02" y2="-7.62" width="0.1524" layer="91"/>
-<wire x1="-33.02" y1="-7.62" x2="-33.02" y2="-20.32" width="0.1524" layer="91"/>
-<wire x1="-33.02" y1="-20.32" x2="-33.02" y2="-30.48" width="0.1524" layer="91"/>
-<pinref part="U$1" gate="G$1" pin="GND"/>
-<wire x1="-33.02" y1="66.04" x2="-2.54" y2="66.04" width="0.1524" layer="91"/>
-<pinref part="X_TILT" gate="A" pin="2"/>
-<wire x1="10.16" y1="111.76" x2="-33.02" y2="111.76" width="0.1524" layer="91"/>
-<wire x1="-33.02" y1="111.76" x2="-33.02" y2="66.04" width="0.1524" layer="91"/>
-<junction x="-33.02" y="66.04"/>
-<wire x1="-5.08" y1="22.86" x2="-33.02" y2="22.86" width="0.1524" layer="91"/>
-<junction x="-5.08" y="22.86"/>
-<junction x="-33.02" y="22.86"/>
-<pinref part="12VDC_AND_LED" gate="G$1" pin="B-1"/>
-<wire x1="-68.58" y1="-20.32" x2="-33.02" y2="-20.32" width="0.1524" layer="91"/>
-<junction x="-33.02" y="-20.32"/>
-<pinref part="JP1" gate="A" pin="2"/>
-<wire x1="-63.5" y1="-30.48" x2="-33.02" y2="-30.48" width="0.1524" layer="91"/>
-<pinref part="12VDC_AND_LED" gate="G$1" pin="B-6"/>
-<wire x1="-68.58" y1="-7.62" x2="-33.02" y2="-7.62" width="0.1524" layer="91"/>
-<junction x="-33.02" y="-7.62"/>
-</segment>
-</net>
 <net name="N$12" class="0">
 <segment>
 <pinref part="U$1" gate="G$1" pin="A4"/>
@@ -1512,6 +1475,62 @@ Types:&lt;p&gt;
 <wire x1="25.4" y1="40.64" x2="25.4" y2="17.78" width="0.1524" layer="91"/>
 <pinref part="RF_HEADER1" gate="A" pin="6"/>
 <wire x1="25.4" y1="17.78" x2="10.16" y2="17.78" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="N$4" class="0">
+<segment>
+<pinref part="RF_HEADER1" gate="A" pin="1"/>
+<wire x1="2.54" y1="22.86" x2="-5.08" y2="22.86" width="0.1524" layer="91"/>
+<wire x1="-5.08" y1="22.86" x2="-5.08" y2="20.32" width="0.1524" layer="91"/>
+<pinref part="RF_HEADER1" gate="A" pin="7"/>
+<wire x1="-5.08" y1="20.32" x2="-5.08" y2="17.78" width="0.1524" layer="91"/>
+<wire x1="-5.08" y1="17.78" x2="-5.08" y2="15.24" width="0.1524" layer="91"/>
+<wire x1="-5.08" y1="15.24" x2="2.54" y2="15.24" width="0.1524" layer="91"/>
+<pinref part="RF_HEADER1" gate="A" pin="3"/>
+<wire x1="2.54" y1="20.32" x2="-5.08" y2="20.32" width="0.1524" layer="91"/>
+<junction x="-5.08" y="20.32"/>
+<pinref part="RF_HEADER1" gate="A" pin="5"/>
+<wire x1="2.54" y1="17.78" x2="-5.08" y2="17.78" width="0.1524" layer="91"/>
+<junction x="-5.08" y="17.78"/>
+<wire x1="-33.02" y1="66.04" x2="-33.02" y2="22.86" width="0.1524" layer="91"/>
+<wire x1="-33.02" y1="22.86" x2="-33.02" y2="-7.62" width="0.1524" layer="91"/>
+<wire x1="-33.02" y1="-7.62" x2="-33.02" y2="-20.32" width="0.1524" layer="91"/>
+<pinref part="U$1" gate="G$1" pin="GND"/>
+<wire x1="-33.02" y1="66.04" x2="-2.54" y2="66.04" width="0.1524" layer="91"/>
+<pinref part="X_TILT" gate="A" pin="2"/>
+<wire x1="10.16" y1="111.76" x2="-33.02" y2="111.76" width="0.1524" layer="91"/>
+<wire x1="-33.02" y1="111.76" x2="-33.02" y2="66.04" width="0.1524" layer="91"/>
+<junction x="-33.02" y="66.04"/>
+<wire x1="-5.08" y1="22.86" x2="-33.02" y2="22.86" width="0.1524" layer="91"/>
+<junction x="-5.08" y="22.86"/>
+<junction x="-33.02" y="22.86"/>
+<pinref part="12VDC_AND_LED" gate="G$1" pin="B-1"/>
+<wire x1="-68.58" y1="-20.32" x2="-33.02" y2="-20.32" width="0.1524" layer="91"/>
+<pinref part="12VDC_AND_LED" gate="G$1" pin="B-6"/>
+<wire x1="-68.58" y1="-7.62" x2="-33.02" y2="-7.62" width="0.1524" layer="91"/>
+<junction x="-33.02" y="-7.62"/>
+<pinref part="USB" gate="A" pin="1"/>
+<wire x1="-25.4" y1="-30.48" x2="-33.02" y2="-30.48" width="0.1524" layer="91"/>
+<wire x1="-33.02" y1="-30.48" x2="-33.02" y2="-20.32" width="0.1524" layer="91"/>
+<junction x="-33.02" y="-20.32"/>
+</segment>
+</net>
+<net name="N$7" class="0">
+<segment>
+<pinref part="U$1" gate="G$1" pin="*5"/>
+<wire x1="-2.54" y1="55.88" x2="-38.1" y2="55.88" width="0.1524" layer="91"/>
+<wire x1="-38.1" y1="55.88" x2="-38.1" y2="-10.16" width="0.1524" layer="91"/>
+<pinref part="12VDC_AND_LED" gate="G$1" pin="B-5"/>
+<wire x1="-38.1" y1="-10.16" x2="-68.58" y2="-10.16" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="N$11" class="0">
+<segment>
+<pinref part="12VDC_AND_LED" gate="G$1" pin="B-4"/>
+<wire x1="-35.56" y1="-12.7" x2="-68.58" y2="-12.7" width="0.1524" layer="91"/>
+<pinref part="U$1" gate="G$1" pin="*6"/>
+<wire x1="-2.54" y1="53.34" x2="-35.56" y2="53.34" width="0.1524" layer="91"/>
+<wire x1="-35.56" y1="-12.7" x2="-35.56" y2="53.34" width="0.1524" layer="91"/>
 </segment>
 </net>
 </nets>
