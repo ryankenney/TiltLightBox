@@ -6,7 +6,7 @@
 #include <tilt_light_box.h>
 #include "FastLED.h"
 
-#define NUM_LEDS 48
+#define NUM_LEDS 46
 CRGB leds[NUM_LEDS];
 const int axisPinN = A1;
 const int axisPinS = A2;
@@ -67,6 +67,10 @@ void initRadio() {
   radio.setRetries(15,15);
   
   radio.enableDynamicPayloads();
+  // Disabled auto-ack in order to prevent overwhelming of server broadcast
+  // NOTE: We never actually verified this was a problem once we removed
+  // our explicit ack messages, but things seem stable now.. so no need to change.
+  radio.setAutoAck(false);
   radio.openWritingPipe(pipes[0]);
   radio.openReadingPipe(1, pipes[1]);
   radio.startListening();
@@ -95,10 +99,13 @@ uint8_t readThemeChangeFromRF() {
       Serial.print("\n");
     }
     // Send ACK
+    // NOTE: Disabled ack in order to prevent overwhelming of server broadcast
+    /*
     radio.stopListening();
     radio.write( &rx_data, sizeof(rx_data) );
     Serial.println("Sent response.");
     radio.startListening();
+    */
   }
   return rx_data[0];
 }
@@ -136,10 +143,13 @@ unsigned char myReceiveThemeChangeFunc(TiltBox *box)  {
     Serial.print(rx_data[0]);
     Serial.print("\n");
     // Send ACK
+    // NOTE: Disabled ack in order to prevent overwhelming of server broadcast
+    /*
     radio.stopListening();
     radio.write( &rx_data, sizeof(rx_data) );
     Serial.println("Sent response.");
     radio.startListening();
+    */
   }
   return rx_data[0];
 }
