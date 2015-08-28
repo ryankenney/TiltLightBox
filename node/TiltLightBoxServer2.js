@@ -33,7 +33,7 @@ process.stdin.on('keypress', function (ch, key) {
   if (key && key.ctrl && key.name == 'c') {
 	process.exit();
   } else if (key && (key.name == 'right' || key.name == 'left')) {
-            colorAlg = ((colorAlg + 2) % 2) + 1;
+            colorAlg = ((colorAlg+1) % 3);
             tx1.write(new Buffer([colorAlg]));
   }
 });
@@ -47,7 +47,7 @@ radio.begin(function () {
     var rx1 = radio.openPipe('rx', Buffer('e7e7e7e7e7','hex'),{autoAck:false}),
         tx1 = radio.openPipe('tx', Buffer('c2c2c2c2c2','hex'),{autoAck:false});
     rx1.on('data', function(d) {
-	new Sound('smb_coin.wav').play();
+	new Sound('/bm/TiltLightBox/node/smb_coin.wav').play();
         console.log("RX Read...");
         console.log(d);
     });
@@ -75,12 +75,12 @@ process.stdin.on('keypress', function (ch, key) {
   if (key && key.ctrl && key.name == 'c') {
         process.exit();
   } else if (key && (key.name == 'right' || key.name == 'left')) {
-            colorAlg = ((colorAlg + 2) % 2) + 1;
+            colorAlg = (colorAlg % 3) + 1;
             tx1.write(new Buffer([colorAlg]));
   }
 });
 
-process.stdin.setRawMode(true);
+//process.stdin.setRawMode(true);
 process.stdin.resume();
 
 
