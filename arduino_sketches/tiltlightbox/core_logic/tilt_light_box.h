@@ -6,6 +6,8 @@
 #include "color_phase.h"
 #include "color_alg_purple_calm.h"
 #include "color_alg_disco.h"
+#include "color_alg_off.h"
+#include "color_alg_x.h"
 
 // TODO [rkenney]: Remove debug
 // #include <stdio.h>
@@ -16,6 +18,11 @@
 #define COLOR_ALG__NOOP 0
 #define COLOR_ALG__PURPLE_CALM 1
 #define COLOR_ALG__DISCO 2
+#define COLOR_ALG__OFF 3
+#define COLOR_ALG__A 4
+#define COLOR_ALG__B 5
+#define COLOR_ALG__C 6
+#define COLOR_ALG__D 7
 
 #define BOX_STATE__UPRIGHT 100
 #define BOX_STATE__TILTING 101
@@ -34,6 +41,8 @@ typedef struct TILT_BOX {
 	int colorAlg;
 	PurpleCalmAlgState purpleCalmAlgState;
 	DiscoAlgState discoAlgState;
+	OffAlgState offAlgState;
+	XAlgState xAlgState;
 	/**
 	 * Whether the box was tilted last cycle
 	 */

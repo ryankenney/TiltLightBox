@@ -29,6 +29,15 @@ void tilt_light_box_initColorAlg(TiltBox *box) {
 	case COLOR_ALG__DISCO:
 		color_alg_disco__init(&box->discoAlgState);
 		break;
+	case COLOR_ALG__OFF:
+		color_alg_off__init(&box->offAlgState);
+		break;
+	case COLOR_ALG__A:
+	case COLOR_ALG__B:
+	case COLOR_ALG__C:
+	case COLOR_ALG__D:
+		color_alg_x__init(&box->xAlgState);
+		break;
 	}
 }
 
@@ -43,6 +52,16 @@ bool tilt_light_box_getColorFromAlg(TiltBox *box, unsigned char *result) {
 		return color_alg_purple_calm__getColor(&box->purpleCalmAlgState, box->boxState, result);
 	case COLOR_ALG__DISCO:
 		return color_alg_disco__getColor(&box->discoAlgState, box->boxState, result);
+	case COLOR_ALG__OFF:
+		return color_alg_off__getColor(&box->offAlgState, box->boxState, result);
+	case COLOR_ALG__A:
+		return color_alg_a__getColor(&box->xAlgState, box->boxState, result);
+	case COLOR_ALG__B:
+		return color_alg_b__getColor(&box->xAlgState, box->boxState, result);
+	case COLOR_ALG__C:
+		return color_alg_c__getColor(&box->xAlgState, box->boxState, result);
+	case COLOR_ALG__D:
+		return color_alg_d__getColor(&box->xAlgState, box->boxState, result);
 	default:
 		return false;
 	}
