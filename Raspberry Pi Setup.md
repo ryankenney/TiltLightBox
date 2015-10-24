@@ -114,12 +114,6 @@ sudo crontab -u root -e
 @reboot /usr/bin/sudo -u root -H /usr/local/bin/forever start /opt/TiltLightBox/node/TiltLightBoxServer.js >> /var/log/tiltlightbox.log 2>&1
 ```
 
-From this you can see that TileLightBox log messages will come out here:
-
-```
-/var/log/tiltlightbox.log
-```
-
 Wired-Up Hardware
 --------------------
 
@@ -128,5 +122,35 @@ See [Wiring Diagrams](Wiring Diagrams.md) for instructions on wiring up the foll
 * nRF24L01 radio antenna (for communciation with light boxes)
 * push button (for change of color/sound themes)
 
+Starting, Stopping, and Monitoring the Server
+--------------------
 
+You can see the processes that the forever module is monitoring with this (you should see TiltLightBox listed):
+
+```
+sudo forever list
+```
+
+If you kill the TiltLightBox process with ps, forever will just restart it, so here's how you properly stop the TiltLightBox process:
+
+```
+sudo forever stopall
+```
+
+(...or you could use ps to kill the forever process, then the TiltLightBox process.)
+
+Once you kill TiltLightBox you can manually start the process in the forground with:
+
+```
+cd /opt/TiltLightBox/node
+sudo node TiltLightBoxServer.js
+```
+
+If you want to launch the TiltLightBox in the background again (managed by forever), it's easiest to simply reboot.
+
+You can see the output of forever-managed TiltLightBox process here: 
+
+```
+/var/log/tiltlightbox.log
+```
 
