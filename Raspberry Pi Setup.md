@@ -93,13 +93,12 @@ npm install usb
 Configure Application Auto-Start
 --------------------
 
-| TODO: Document |
-
+![](fixme.png) Document
 
 Wire-Up Hardware
 --------------------
 
-| TODO: Link to wiring for RF and button |
+![](fixme.png) Link to wiring for RF and button
 
 
 

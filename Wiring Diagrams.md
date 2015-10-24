@@ -13,8 +13,6 @@ doesn't often identify which combination of models/numbering systems they are us
 
 In any case, here is the pinout diagram for the model I'm using (Raspberry PI 2 B v1.1):
 
-| TODO: FIX IMAGE LINK |
-
 ![raspberry-pi-2b-pins.png](raspberry-pi-2b-pins.png)
 
 Raspberry PI RF Wiring
@@ -37,4 +35,4 @@ Here is the wiring table for a Raspberry PI 2B to a nRF24L01 RF adapter:
 Raspberry PI Button Wiring
 ----------------
 
-| TODO: Document |
+![](fixme.png) Document
