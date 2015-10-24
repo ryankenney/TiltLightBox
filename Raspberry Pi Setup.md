@@ -46,7 +46,7 @@ sudo aptitude install build-essentials
 
 Certain node dependencies rely upon the build essentials.
 
-Install nodejs
+Installed nodejs
 --------------------
 
 > Source: [Installing node.js on Rasberry Pi](https://learn.adafruit.com/node-embedded-development/installing-node-dot-js)
@@ -70,7 +70,7 @@ $ node -v
 v0.12.0
 ```
 
-Download and Install TiltLightBox Application
+Downloaded/Installed TiltLightBox Application
 --------------------
 
 Get the source code:
@@ -78,27 +78,55 @@ Get the source code:
 ```
 cd /opt/
 git clone https://github.com/ryankenney/TiltLightBox.git
-cd TiltLightBox
 ```
 
 Load Node.js dependencies
 
 ```
+cd /opt/TiltLightBox/node
 npm install nrf
 npm install sleep
 npm install readable
 npm install usb
 ```
 
-Configure Application Auto-Start
+Configured Application Auto-Start
 --------------------
 
-![](fixme.png) Document
+![](fixme.png) Verify that this section is accurate. Written from memory.
 
-Wire-Up Hardware
+Install forever module (monitors a Node.js process and restarts it if it dies):
+
+```
+cd /opt/TiltLightBox/node
+sudo -i npm install forever -g
+```
+
+Install crontask to launch forever monitor on startup:
+
+```
+sudo crontab -u root -e
+```
+
+... adding line:
+
+```
+@reboot /usr/bin/sudo -u root -H /usr/local/bin/forever start /opt/TiltLightBox/node/TiltLightBoxServer.js >> /var/log/tiltlightbox.log 2>&1
+```
+
+From this you can see that TileLightBox log messages will come out here:
+
+```
+/var/log/tiltlightbox.log
+```
+
+Wired-Up Hardware
 --------------------
 
-![](fixme.png) Link to wiring for RF and button
+See [Wiring Diagrams](Wiring Diagrams.md) for instructions on wiring up the following hardware to the Raspberry Pi:
+
+* nRF24L01 radio antenna (for communciation with light boxes)
+* push button (for change of color/sound themes)
 
 
 
