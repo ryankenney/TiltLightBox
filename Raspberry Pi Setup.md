@@ -49,7 +49,7 @@ Certain node dependencies rely upon the build essentials.
 Install nodejs
 --------------------
 
-| Source: [Installing node.js on Rasberry Pi](https://learn.adafruit.com/node-embedded-development/installing-node-dot-js) |
+> Source: [Installing node.js on Rasberry Pi](https://learn.adafruit.com/node-embedded-development/installing-node-dot-js)
 
 Add apt.adafruit.com to your package repository list (/etc/apt/sources.list):
 
