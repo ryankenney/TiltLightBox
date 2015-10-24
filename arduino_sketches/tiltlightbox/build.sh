@@ -43,6 +43,8 @@ emcc \
 	core_logic/color_phase.cpp \
 	core_logic/color_alg_purple_calm.cpp \
 	core_logic/color_alg_disco.cpp \
+	core_logic/color_alg_off.cpp \
+	core_logic/color_alg_x.cpp \
 	js_adaptor/tilt_light_box_jsapi.cpp \
 	-o web/tilt_light_box.js \
 	-s EXPORTED_FUNCTIONS="['_main','_createTiltBox','_runCycle']" \

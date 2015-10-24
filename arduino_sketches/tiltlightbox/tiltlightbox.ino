@@ -9,7 +9,7 @@
 #define NUM_LEDS 46
 CRGB leds[NUM_LEDS];
 const int axisPinN = A1;
-const int axisPinS = A2;
+const int axisPinS = A2;  
 const int axisPinE = 8;
 const int axisPinW = 7;
 const uint64_t pipes[2] = { 0xe7e7e7e7e7LL, 0xc2c2c2c2c2LL };
@@ -70,7 +70,7 @@ void initRadio() {
   // Disabled auto-ack in order to prevent overwhelming of server broadcast
   // NOTE: We never actually verified this was a problem once we removed
   // our explicit ack messages, but things seem stable now.. so no need to change.
-  radio.setAutoAck(false);
+  radio.setAutoAck(true);
   radio.openWritingPipe(pipes[0]);
   radio.openReadingPipe(1, pipes[1]);
   radio.startListening();
@@ -79,35 +79,6 @@ void initRadio() {
 
   // This was blocking execution on my Uno for some reason
   //radio.printDetails();
-}
-
-uint8_t readThemeChangeFromRF() {
-  // Read theme request from RF
-  uint8_t rx_data[1] = {COLOR_ALG__NOOP};
-  uint8_t len = 0;
-  if (radio.available()) {
-    boolean done;
-    while (radio.available()) {
-      len = radio.getDynamicPayloadSize();
-      if (!len) {
-        break;
-      }
-      radio.read( &rx_data, sizeof(rx_data) );
-      // TODO [rkenney]: Remove debug
-      Serial.print("Recieved theme change: ");
-      Serial.print(rx_data[0]);
-      Serial.print("\n");
-    }
-    // Send ACK
-    // NOTE: Disabled ack in order to prevent overwhelming of server broadcast
-    /*
-    radio.stopListening();
-    radio.write( &rx_data, sizeof(rx_data) );
-    Serial.println("Sent response.");
-    radio.startListening();
-    */
-  }
-  return rx_data[0];
 }
 
 void mySleepFunc(unsigned long millis) {
@@ -138,8 +109,12 @@ unsigned char myReceiveThemeChangeFunc(TiltBox *box)  {
     if (len < 1) {
       break;
     }
+    
+    Serial.print("Len: ");
+    Serial.println(len);
+
     radio.read( &rx_data, sizeof(rx_data) );
-    Serial.print("Recieved theme change: ");
+    Serial.print  ("Received theme change: ");
     Serial.print(rx_data[0]);
     Serial.print("\n");
     // Send ACK
