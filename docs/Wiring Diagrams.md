@@ -13,10 +13,10 @@ doesn't often identify which combination of models/numbering systems they are us
 
 In any case, here is the pinout diagram for the model I'm using (Raspberry PI 2 B v1.1):
 
-[![alt text][2]][1]
+[![alt text][1]][2]
 
-  [1]: raspberry-pi-2b-pins_thumb.png
-  [2]: raspberry-pi-2b-pins_thumb.png (Wiring Diagram)
+  [1]: raspberry-pi-2b-pins_thumb.png (Wiring Diagram)
+  [2]: raspberry-pi-2b-pins.png
 
 Raspberry PI RF Wiring
 ----------------
