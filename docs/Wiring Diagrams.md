@@ -15,10 +15,8 @@ In any case, here is the pinout diagram for the model I'm using (Raspberry PI 2 
 
 [![alt text][2]][1]
 
-  [1]: tilt_switch.jpg
-  [2]: raspberry-pi-2b-pins.png (Wiring Diagram)
-
-![raspberry-pi-2b-pins.png](raspberry-pi-2b-pins.png)
+  [1]: raspberry-pi-2b-pins_thumb.png
+  [2]: raspberry-pi-2b-pins_thumb.png (Wiring Diagram)
 
 Raspberry PI RF Wiring
 ----------------
