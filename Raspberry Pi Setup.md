@@ -10,7 +10,7 @@ This is what I did to get my Raspberry Pi 2 B running as the control/audio serve
 Installed OS
 --------------------
 
-I just loaded the Pi with the basic Raspian image.
+I just loaded the Pi with the basic NOOBS Raspian image.
 
 Enabled SPI and I2C Kernel Modules
 --------------------
