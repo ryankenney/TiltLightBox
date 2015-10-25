@@ -1,8 +1,8 @@
 TiltLightBox
 ====================
 
-* ![](fixme.png) [Building the Hardware]()
-* ![](fixme.png) [Testing in Web Emulator]()
-* [Raspberry Pi Setup](Raspberry Pi Setup.md)
-* [Wiring Diagrams.md](Wiring Diagrams)
+* ![](docs/fixme.png) [Building the Hardware]()
+* ![](docs/fixme.png) [Testing in Web Emulator]()
+* [Raspberry Pi Setup](docs/Raspberry Pi Setup.md)
+* [Wiring Diagrams](docs/Wiring Diagrams.md)
 
