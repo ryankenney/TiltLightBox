@@ -8,18 +8,18 @@ TiltLightBox is a hardware/software platform we developed for an (![](docs/fixme
 
 [![alt text][1]][2]
 
-  [1]: Overview_thumb.png (Wiring Diagram)
-  [2]: Overview.png
+  [1]: docs/Overview_thumb.png (Wiring Diagram)
+  [2]: docs/Overview.png
 
 [![alt text][3]][4]
 
-  [3]: Overview - TiltLightBox_thumb.png (Wiring Diagram)
-  [4]: Overview - TiltLightBox.png
+  [3]: docs/Overview_TiltLightBox_thumb.png (Wiring Diagram)
+  [4]: docs/Overview_TiltLightBox.png
 
 [![alt text][5]][6]
 
-  [5]: Overview - TiltLightBox Server_thumb.png (Wiring Diagram)
-  [6]: Overview - TiltLightBox Server.png
+  [5]: docs/Overview_TiltLightBox-Server_thumb.png (Wiring Diagram)
+  [6]: docs/Overview_TiltLightBox-Server.png
 
 
 Index
