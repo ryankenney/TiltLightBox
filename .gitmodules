@@ -1,3 +1,0 @@
-[submodule "arduino_libs/RF24"]
-	path = arduino_libs/RF24
-	url = https://github.com/ryankenney/RF24
