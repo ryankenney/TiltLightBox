@@ -25,10 +25,6 @@ Select "Advanced Options"
 
 * Select "SPI"
 	* Enable the module on startup
-* Select "IC2"
-	* Enable the module on startup
-
-(I need to go back verify that IC2 is required. I suspect it is not.)
 
 Reboot the Pi
 
@@ -87,9 +83,6 @@ Load Node.js dependencies
 ```
 cd /opt/TiltLightBox/node
 npm install nrf
-npm install sleep
-npm install readable
-npm install usb
 ```
 
 Configured Application Auto-Start
