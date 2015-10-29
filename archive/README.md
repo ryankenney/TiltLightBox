@@ -37,3 +37,8 @@ Eagle
 ### eagle/r0.2.6
 
 The first PCB I ordered. It supports a 5.5v Arduino controlling 12v LED strips. 
+
+### eagle/r0.4.0
+
+The PCB I brought to Burning Man 2015.
+
