@@ -76,6 +76,8 @@ Downloaded/Installed TiltLightBox Application
 Get the source code:
 
 ```
+sudo mkdir /opt/TiltLightBox
+sudo chown pi:pi /opt/TiltLightBox/
 cd /opt/
 git clone https://github.com/ryankenney/TiltLightBox.git
 ```
