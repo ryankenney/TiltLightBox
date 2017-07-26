@@ -12,6 +12,7 @@ const int axisPinN = A1;
 const int axisPinS = A2;  
 const int axisPinE = 8;
 const int axisPinW = 7;
+const int unusedAnalogPin = A6; // For random seed
 const uint64_t pipes[2] = { 0xe7e7e7e7e7LL, 0xc2c2c2c2c2LL };
 TiltBox* box;
 const int RF_CE = 9;
@@ -29,6 +30,7 @@ void myTransmitTiltStateFunc(TiltBox *box, unsigned char boxState);
 void myWriteVisibleColorFunc(TiltBox *box, unsigned char r, unsigned char g, unsigned char b);
 
 boolean wasTilted = false;
+int boxId = -1;
 
 void setup() {
   Serial.begin(9600);
@@ -51,6 +53,13 @@ void setup() {
   setTransmitTiltStateFunc(myTransmitTiltStateFunc);
   setWriteVisibleColorFunc(myWriteVisibleColorFunc);
   box = createTiltBox();
+
+  // Initialize random number generator from the disconnected pin (one of two rarely wired to anything on the arduino micro)
+  // TODO [rkenney]: Move logic into TiltLightBox core
+  randomSeed(analogRead(A4));
+  boxId = random(0, 32767);
+  Serial.print("Box ID: ");
+  Serial.println(boxId);
 }
 
 void loop() {
