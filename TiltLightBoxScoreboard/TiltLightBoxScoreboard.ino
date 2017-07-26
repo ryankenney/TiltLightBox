@@ -20,17 +20,21 @@ void setup()
   digitalWrite(segmentLatch, LOW);
 }
 
-int number = 0;
+String readValue = "";
 
-void loop()
-{
-  showNumber(number); //Test pattern
-  number++;
-  number %= 100; //Reset x after 99
-  
-  Serial.println(number); //For debugging
-  
-  delay(500);
+void loop() {
+  if (!Serial.available()) {
+    delay(100);
+    return;
+  }
+  char c = Serial.read();
+  if (c == '\n') {
+    showNumber(readValue.toInt());
+    Serial.println("Rendering: "+readValue);
+    readValue = "";
+  } else {
+    readValue += c;
+  }
 }
 
 //Takes a number and displays 2 numbers. Displays absolute value (no negatives)
