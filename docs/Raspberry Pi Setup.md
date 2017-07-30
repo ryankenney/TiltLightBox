@@ -21,12 +21,11 @@ Launch the Raspberry Pi config tool:
 sudo raspbi-config
 ```
 
-Select "Advanced Options"
+* Select "Interfacing Options"
+	* Select "SPI"
+		* Enable the module
 
-* Select "SPI"
-	* Enable the module on startup
-
-Reboot the Pi
+Reboot the Pi:
 
 ```
 sudo reboot
