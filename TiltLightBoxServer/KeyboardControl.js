@@ -2,10 +2,6 @@ var keypress = require('keypress');
 
 class KeyboardControl {
     constructor(themeChangeAction) {
-        console.log("Keyboard Input Enabled");
-        console.log("  c:          Exit program");
-        console.log("  arrow-left: Change theme");
-
         // Make process.stdin begin emitting "keypress" events
         keypress(process.stdin);
 
@@ -23,6 +19,10 @@ class KeyboardControl {
 
         // Resume reading stdin
         process.stdin.resume();
+
+        console.log("=== Keyboard Input Enabled ===");
+        console.log("  c:          Exit program");
+        console.log("  arrow-left: Change theme");
     }
 };
 

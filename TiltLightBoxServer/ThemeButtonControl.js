@@ -12,6 +12,7 @@ class ThemeButtonControl {
             }
             this.lastButtonValue = value;
         });
+        console.log("=== Theme Button Enabled ===");
     }
 };
 

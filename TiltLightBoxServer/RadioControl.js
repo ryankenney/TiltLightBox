@@ -9,6 +9,7 @@ class RadioControl {
         radio.channel(0x4c).dataRate('1Mbps').crcBytes(2).autoRetransmit({count:15, delay:4000});
 
         radio.begin(function () {
+            console.log("=== Radio Enabled ===");
             radio.printDetails();
 
             // NOTE: Disabled auto-ack, as this was causing the device
