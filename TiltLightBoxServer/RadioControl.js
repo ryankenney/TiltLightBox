@@ -13,8 +13,8 @@ class RadioControl {
 
             // NOTE: Disabled auto-ack, as this was causing the device
             // buffer to lockup from the acks of the many devices listening
-            thix.rx1 = radio.openPipe('rx', Buffer('e7e7e7e7e7', 'hex'), {autoAck: false});
-            thix.tx1 = radio.openPipe('tx', Buffer('c2c2c2c2c2', 'hex'), {autoAck: false});
+            this.rx1 = radio.openPipe('rx', Buffer('e7e7e7e7e7', 'hex'), {autoAck: false});
+            this.tx1 = radio.openPipe('tx', Buffer('c2c2c2c2c2', 'hex'), {autoAck: false});
 
             // Log on startup
             this.tx1.on('ready', function (e) {
