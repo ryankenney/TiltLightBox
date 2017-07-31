@@ -27,7 +27,7 @@ var ThemeButtonControl = require('./ThemeButtonControl.js');
 var themeIds = [1,2,4,5,7];
 var lastThemeIndex = -1;
 
-console.log('Running');
+console.log('App Starting...');
 
 let radio = null;
 

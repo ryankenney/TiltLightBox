@@ -34,7 +34,7 @@ Let's call the root of that repo ```$TLB_HOME```.
 You need to load the "arduino/core_logic/" directory into your Arduino IDE libraries. In linux, this is most easly accomlished with a symlink:
 
 ```
-ln -s $TLB_HOME/arduino/core_logic ~/sketchbook/libraries/TiltLightBox
+ln -s $TLB_HOME/TilteLightBoxPin/core_logic ~/sketchbook/libraries/TiltLightBox
 ```
 
 Loaded Arduino Sketch onto Arduino

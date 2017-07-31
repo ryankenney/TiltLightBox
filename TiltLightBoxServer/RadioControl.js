@@ -9,9 +9,6 @@ class RadioControl {
         radio.channel(0x4c).dataRate('1Mbps').crcBytes(2).autoRetransmit({count:15, delay:4000});
 
         radio.begin(function () {
-            console.log("=== Radio Enabled ===");
-            radio.printDetails();
-
             // NOTE: Disabled auto-ack, as this was causing the device
             // buffer to lockup from the acks of the many devices listening
             this.rx1 = radio.openPipe('rx', Buffer('e7e7e7e7e7', 'hex'), {autoAck: false});
@@ -24,6 +21,9 @@ class RadioControl {
             this.rx1.on('ready', function (e) {
                 console.log("RX Reader");
             });
+
+            console.log("=== Radio Enabled ===");
+            radio.printDetails();
 
             // Restart radio on error
             this.tx1.on('error', function (e) {
