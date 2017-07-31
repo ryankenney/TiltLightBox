@@ -4,6 +4,10 @@ class RadioControl {
     constructor(cePin, irqPin, onRadioStart) {
 
         this.onTilt = (m) => {};
+        let doOnTilt = (d) => {
+            console.log("RX Read: "+d.readUInt8(0));
+            this.onTilt();
+        };
 
         var radio = NRF.connect('/dev/spidev0.0', cePin, irqPin);
         radio.channel(0x4c).dataRate('1Mbps').crcBytes(2).autoRetransmit({count:15, delay:4000});
@@ -33,10 +37,7 @@ class RadioControl {
             });
 
             // Bind onTilt action
-            this.rx1.on('data', function (d) {
-                console.log("RX Read: " + d);
-                this.onTilt();
-            });
+            this.rx1.on('data', doOnTilt);
 
             // Notify caller
             if (onRadioStart) { onRadioStart(); }
