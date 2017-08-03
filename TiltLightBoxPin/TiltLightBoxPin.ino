@@ -16,8 +16,6 @@ const int axisPinS = A2;
 const int axisPinE = 8;
 const int axisPinW = 7;
 const int unusedAnalogPin = A4; // For random seed
-const int STATE_PRFIX__TILTING = 100;
-const int STATE_PRFIX__RESETTING = 200;
 const uint64_t pipes[2] = { 0xe7e7e7e7e7LL, 0xc2c2c2c2c2LL };
 TiltBox* box;
 const int RF_CE = 9;
@@ -107,9 +105,20 @@ unsigned long myCurrentMillisFunc() {
 }
 
 void myTransmitTiltStateFunc(TiltBox *box, unsigned char boxState) {
+    uint8_t statePrefix = 0;
+    switch (boxState) {
+    case BOX_STATE__TILTING:
+      statePrefix = 1;
+      break;
+    case BOX_STATE__RESETTING:
+      statePrefix = 2;
+      break;
+    default:
+      statePrefix = 0;
+    }
     radio.stopListening();
     // NOTE: An 8-bit packet seems to minimize collions between parallel nRF24L01 radios,
-    uint8_t rx_data[1] = {STATE_PRFIX__TILTING + BOX_ID};
+    uint8_t rx_data[1] = {statePrefix + BOX_ID};
     radio.write( &rx_data, sizeof(rx_data) );
     Serial.println("Sent tilt.");
     radio.startListening();

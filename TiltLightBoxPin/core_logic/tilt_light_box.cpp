@@ -171,14 +171,19 @@ void runCycle(TiltBox *box) {
 
 	// Read tilt sensor
 	bool newlyTilting = false;
+	bool newlyReset = false;
 	bool isTilted = tiltSensorIsActive(box);
 	if (isTilted & !box->wasTilted) {
 		newlyTilting = true;
+	} else if (!isTilted & box->wasTilted) {
+		newlyReset = true;
 	}
 
 	// Notify master of tilting via RF
 	if (newlyTilting) {
 		transmitTiltState(box, BOX_STATE__TILTING);
+	} else if (newlyReset) {
+		transmitTiltState(box, BOX_STATE__RESETTING);
 	}
 
 	// Apply any change in tilt state to color algorithm

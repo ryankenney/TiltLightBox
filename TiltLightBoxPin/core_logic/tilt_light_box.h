@@ -24,9 +24,11 @@
 #define COLOR_ALG__C 6
 #define COLOR_ALG__D 7
 
+// TODO [rkenney]: Can we get rid of TILTING and RESETTING states?
 #define BOX_STATE__UPRIGHT 100
 #define BOX_STATE__TILTING 101
 #define BOX_STATE__TILTED 102
+#define BOX_STATE__RESETTING 103
 
 #ifdef __cplusplus
 extern "C" {
