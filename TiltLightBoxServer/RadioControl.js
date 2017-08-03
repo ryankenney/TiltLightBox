@@ -3,10 +3,13 @@ var NRF = require('nrf');
 class RadioControl {
     constructor(cePin, irqPin, onRadioStart) {
 
-        this.onTilt = (m) => {};
-        let doOnTilt = (d) => {
-            console.log("RX Read: "+d.readUInt8(0));
-            this.onTilt();
+        this.onTiltStateChange = (m) => {};
+        let doOnTiltStateChange = (data) => {
+            let packet = data.readUInt8(0);
+            let state = Math.floor(packet / 100);
+            let boxId = packet % 100;
+            console.log("RX Read: "+state+","+boxId);
+            this.onTiltStateChange(state, boxId);
         };
 
         var radio = NRF.connect('/dev/spidev0.0', cePin, irqPin);
@@ -37,7 +40,7 @@ class RadioControl {
             });
 
             // Bind onTilt action
-            this.rx1.on('data', doOnTilt);
+            this.rx1.on('data', doOnTiltStateChange);
 
             // Notify caller
             if (onRadioStart) { onRadioStart(); }
@@ -45,8 +48,8 @@ class RadioControl {
     }
 };
 
-RadioControl.prototype.setOnTilt = function (callback) {
-    this.onTilt = callback;
+RadioControl.prototype.setOnTiltStateChange = function (callback) {
+    this.onTiltStateChange = callback;
 };
 
 RadioControl.prototype.sendTheme = function (themeId) {

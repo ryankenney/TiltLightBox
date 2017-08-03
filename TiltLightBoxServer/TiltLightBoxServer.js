@@ -2,6 +2,7 @@ var Sound = require('node-aplay');
 var RadioControl = require('./RadioControl.js');
 var KeyboardControl = require('./KeyboardControl.js');
 var ThemeButtonControl = require('./ThemeButtonControl.js');
+var BowlingScore = require('./BowlingScore.js');
 
 /* == Radio Pins ==
  * VCC: Red
@@ -24,12 +25,13 @@ var ThemeButtonControl = require('./ThemeButtonControl.js');
  * Pin 24 / GPIO 08 /  SPI_CE0: Orange
  */
 
-var themeIds = [1,2,4,5,7];
-var lastThemeIndex = -1;
+let themeIds = [1,2,4,5,7];
+let lastThemeIndex = -1;
 
 console.log('App Starting...');
 
 let radio = null;
+let score = new BowlingScore();
 
 function sendNextTheme() {
     var index = (lastThemeIndex + 1) % themeIds.length;
@@ -44,8 +46,18 @@ new Promise((resolve) => {
 }).
 // Bind sound effects to "tilt" action from boxes/pins
 then(() => {
-    radio.setOnTilt(() => {
-        new Sound('/bm/TiltLightBox/node/smb_coin.wav').play();
+    radio.setOnTilt((state, boxId) => {
+        switch (state) {
+            case 1:
+                new Sound('/bm/TiltLightBox/node/smb_coin.wav').play();
+                score.pinStateChanged(boxId, true)
+                break;
+            case 2:
+                score.pinStateChanged(boxId, false)
+                break;
+            default:
+                break;
+        }
     });
 }).
 // Bind local keyboard control (for testing)
