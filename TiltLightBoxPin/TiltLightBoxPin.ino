@@ -6,13 +6,18 @@
 #include <tilt_light_box.h>
 #include "FastLED.h"
 
+// Manually set this before uploading to each box/pin
+const uint8_t BOX_ID = 0;
+
 #define NUM_LEDS 46
 CRGB leds[NUM_LEDS];
 const int axisPinN = A1;
 const int axisPinS = A2;  
 const int axisPinE = 8;
 const int axisPinW = 7;
-const int unusedAnalogPin = A6; // For random seed
+const int unusedAnalogPin = A4; // For random seed
+const int STATE_PRFIX__TILTING = 100;
+const int STATE_PRFIX__RESETTING = 200;
 const uint64_t pipes[2] = { 0xe7e7e7e7e7LL, 0xc2c2c2c2c2LL };
 TiltBox* box;
 const int RF_CE = 9;
@@ -30,7 +35,6 @@ void myTransmitTiltStateFunc(TiltBox *box, unsigned char boxState);
 void myWriteVisibleColorFunc(TiltBox *box, unsigned char r, unsigned char g, unsigned char b);
 
 boolean wasTilted = false;
-int boxId = -1;
 
 void setup() {
   Serial.begin(9600);
@@ -54,12 +58,12 @@ void setup() {
   setWriteVisibleColorFunc(myWriteVisibleColorFunc);
   box = createTiltBox();
 
-  // Initialize random number generator from the disconnected pin (one of two rarely wired to anything on the arduino micro)
-  // TODO [rkenney]: Move logic into TiltLightBox core
-  randomSeed(analogRead(A4));
-  boxId = random(0, 32767);
+  // Initialize random number generator from the disconnected pin
+  // (one of the rarely wired pins of the Arduino Mini Pro)
+  randomSeed(analogRead(unusedAnalogPin));
+
   Serial.print("Box ID: ");
-  Serial.println(boxId);
+  Serial.println(BOX_ID);
 }
 
 void loop() {
@@ -104,7 +108,8 @@ unsigned long myCurrentMillisFunc() {
 
 void myTransmitTiltStateFunc(TiltBox *box, unsigned char boxState) {
     radio.stopListening();
-    uint8_t rx_data[1] = {BOX_STATE__TILTING};
+    // NOTE: An 8-bit packet seems to minimize collions between parallel nRF24L01 radios,
+    uint8_t rx_data[1] = {STATE_PRFIX__TILTING + BOX_ID};
     radio.write( &rx_data, sizeof(rx_data) );
     Serial.println("Sent tilt.");
     radio.startListening();
